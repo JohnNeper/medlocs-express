@@ -9,38 +9,169 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ReservationsRouteImport } from './routes/reservations'
+import { Route as RechercheRouteImport } from './routes/recherche'
+import { Route as OrdonnanceRouteImport } from './routes/ordonnance'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AideRouteImport } from './routes/aide'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReservationPharmacyIdRouteImport } from './routes/reservation.$pharmacyId'
+import { Route as ConfirmationReservationIdRouteImport } from './routes/confirmation.$reservationId'
 
+const ReservationsRoute = ReservationsRouteImport.update({
+  id: '/reservations',
+  path: '/reservations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RechercheRoute = RechercheRouteImport.update({
+  id: '/recherche',
+  path: '/recherche',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OrdonnanceRoute = OrdonnanceRouteImport.update({
+  id: '/ordonnance',
+  path: '/ordonnance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AideRoute = AideRouteImport.update({
+  id: '/aide',
+  path: '/aide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReservationPharmacyIdRoute = ReservationPharmacyIdRouteImport.update({
+  id: '/reservation/$pharmacyId',
+  path: '/reservation/$pharmacyId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfirmationReservationIdRoute =
+  ConfirmationReservationIdRouteImport.update({
+    id: '/confirmation/$reservationId',
+    path: '/confirmation/$reservationId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
+  '/ordonnance': typeof OrdonnanceRoute
+  '/recherche': typeof RechercheRoute
+  '/reservations': typeof ReservationsRoute
+  '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
+  '/reservation/$pharmacyId': typeof ReservationPharmacyIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
+  '/ordonnance': typeof OrdonnanceRoute
+  '/recherche': typeof RechercheRoute
+  '/reservations': typeof ReservationsRoute
+  '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
+  '/reservation/$pharmacyId': typeof ReservationPharmacyIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aide': typeof AideRoute
+  '/auth': typeof AuthRoute
+  '/ordonnance': typeof OrdonnanceRoute
+  '/recherche': typeof RechercheRoute
+  '/reservations': typeof ReservationsRoute
+  '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
+  '/reservation/$pharmacyId': typeof ReservationPharmacyIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/aide'
+    | '/auth'
+    | '/ordonnance'
+    | '/recherche'
+    | '/reservations'
+    | '/confirmation/$reservationId'
+    | '/reservation/$pharmacyId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/aide'
+    | '/auth'
+    | '/ordonnance'
+    | '/recherche'
+    | '/reservations'
+    | '/confirmation/$reservationId'
+    | '/reservation/$pharmacyId'
+  id:
+    | '__root__'
+    | '/'
+    | '/aide'
+    | '/auth'
+    | '/ordonnance'
+    | '/recherche'
+    | '/reservations'
+    | '/confirmation/$reservationId'
+    | '/reservation/$pharmacyId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AideRoute: typeof AideRoute
+  AuthRoute: typeof AuthRoute
+  OrdonnanceRoute: typeof OrdonnanceRoute
+  RechercheRoute: typeof RechercheRoute
+  ReservationsRoute: typeof ReservationsRoute
+  ConfirmationReservationIdRoute: typeof ConfirmationReservationIdRoute
+  ReservationPharmacyIdRoute: typeof ReservationPharmacyIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reservations': {
+      id: '/reservations'
+      path: '/reservations'
+      fullPath: '/reservations'
+      preLoaderRoute: typeof ReservationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recherche': {
+      id: '/recherche'
+      path: '/recherche'
+      fullPath: '/recherche'
+      preLoaderRoute: typeof RechercheRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ordonnance': {
+      id: '/ordonnance'
+      path: '/ordonnance'
+      fullPath: '/ordonnance'
+      preLoaderRoute: typeof OrdonnanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aide': {
+      id: '/aide'
+      path: '/aide'
+      fullPath: '/aide'
+      preLoaderRoute: typeof AideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +179,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reservation/$pharmacyId': {
+      id: '/reservation/$pharmacyId'
+      path: '/reservation/$pharmacyId'
+      fullPath: '/reservation/$pharmacyId'
+      preLoaderRoute: typeof ReservationPharmacyIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/confirmation/$reservationId': {
+      id: '/confirmation/$reservationId'
+      path: '/confirmation/$reservationId'
+      fullPath: '/confirmation/$reservationId'
+      preLoaderRoute: typeof ConfirmationReservationIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AideRoute: AideRoute,
+  AuthRoute: AuthRoute,
+  OrdonnanceRoute: OrdonnanceRoute,
+  RechercheRoute: RechercheRoute,
+  ReservationsRoute: ReservationsRoute,
+  ConfirmationReservationIdRoute: ConfirmationReservationIdRoute,
+  ReservationPharmacyIdRoute: ReservationPharmacyIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
