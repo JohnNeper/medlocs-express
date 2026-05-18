@@ -13,10 +13,10 @@ export const Route = createFileRoute("/recherche")({
     q: typeof s.q === "string" && s.q.length > 0 ? s.q : "Paracétamol 500mg",
     filter: s.filter === "open" || s.filter === "duty" || s.filter === "near" ? s.filter : undefined,
   }),
-  head: ({ match }) => ({
+  head: () => ({
     meta: [
-      { title: `${(match.search as Search).q} — Pharmacies à Bafoussam` },
-      { name: "description", content: `Trouver ${(match.search as Search).q} dans les pharmacies de Bafoussam.` },
+      { title: "Résultats — MedLocs" },
+      { name: "description", content: "Pharmacies de Bafoussam ayant votre médicament en stock." },
     ],
   }),
   component: SearchResultsPage,
