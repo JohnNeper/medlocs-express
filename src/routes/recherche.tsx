@@ -23,11 +23,12 @@ export const Route = createFileRoute("/recherche")({
 });
 
 function SearchResultsPage() {
-  const { q, filter } = Route.useSearch();
+  const { q, filter: initialFilter } = Route.useSearch();
   const navigate = useNavigate();
   const med = useMemo(() => findMedication(q), [q]);
   const prescription = useStore((s) => s.prescription);
   const [infoFor, setInfoFor] = useState<Pharmacy | null>(null);
+  const [filter, setFilter] = useState<"open" | "duty" | "near" | null>(initialFilter ?? null);
 
   const pharmacies = useMemo(() => {
     let list = [...PHARMACIES].sort((a, b) => a.distanceM - b.distanceM);
@@ -72,6 +73,28 @@ function SearchResultsPage() {
             <span className="text-xs font-bold text-warning-foreground">Joindre</span>
           </Link>
         )}
+
+        <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1 mb-3">
+          {[
+            { id: null, label: "Toutes" },
+            { id: "open" as const, label: "🟢 Ouvert" },
+            { id: "duty" as const, label: "⏰ De garde" },
+            { id: "near" as const, label: "📍 Proches" },
+          ].map((f) => {
+            const active = filter === f.id;
+            return (
+              <button
+                key={String(f.id)}
+                onClick={() => setFilter(f.id as typeof filter)}
+                className={`whitespace-nowrap rounded-full px-4 py-2 text-sm font-medium transition border ${
+                  active ? "bg-primary text-primary-foreground border-primary shadow-pop" : "bg-card text-foreground border-border"
+                }`}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
 
         <div className="rounded-2xl border border-border bg-primary-soft/60 p-4 flex items-center gap-3">
           <div className="grid place-items-center h-10 w-10 rounded-xl bg-primary text-primary-foreground">
