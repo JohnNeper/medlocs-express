@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ReservationsRouteImport } from './routes/reservations'
 import { Route as RechercheRouteImport } from './routes/recherche'
+import { Route as ProfilRouteImport } from './routes/profil'
 import { Route as OrdonnanceRouteImport } from './routes/ordonnance'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AideRouteImport } from './routes/aide'
@@ -26,6 +27,11 @@ const ReservationsRoute = ReservationsRouteImport.update({
 const RechercheRoute = RechercheRouteImport.update({
   id: '/recherche',
   path: '/recherche',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfilRoute = ProfilRouteImport.update({
+  id: '/profil',
+  path: '/profil',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrdonnanceRoute = OrdonnanceRouteImport.update({
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/aide': typeof AideRoute
   '/auth': typeof AuthRoute
   '/ordonnance': typeof OrdonnanceRoute
+  '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/reservations': typeof ReservationsRoute
   '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/aide': typeof AideRoute
   '/auth': typeof AuthRoute
   '/ordonnance': typeof OrdonnanceRoute
+  '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/reservations': typeof ReservationsRoute
   '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/aide': typeof AideRoute
   '/auth': typeof AuthRoute
   '/ordonnance': typeof OrdonnanceRoute
+  '/profil': typeof ProfilRoute
   '/recherche': typeof RechercheRoute
   '/reservations': typeof ReservationsRoute
   '/confirmation/$reservationId': typeof ConfirmationReservationIdRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/aide'
     | '/auth'
     | '/ordonnance'
+    | '/profil'
     | '/recherche'
     | '/reservations'
     | '/confirmation/$reservationId'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/aide'
     | '/auth'
     | '/ordonnance'
+    | '/profil'
     | '/recherche'
     | '/reservations'
     | '/confirmation/$reservationId'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/aide'
     | '/auth'
     | '/ordonnance'
+    | '/profil'
     | '/recherche'
     | '/reservations'
     | '/confirmation/$reservationId'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   AideRoute: typeof AideRoute
   AuthRoute: typeof AuthRoute
   OrdonnanceRoute: typeof OrdonnanceRoute
+  ProfilRoute: typeof ProfilRoute
   RechercheRoute: typeof RechercheRoute
   ReservationsRoute: typeof ReservationsRoute
   ConfirmationReservationIdRoute: typeof ConfirmationReservationIdRoute
@@ -149,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/recherche'
       fullPath: '/recherche'
       preLoaderRoute: typeof RechercheRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profil': {
+      id: '/profil'
+      path: '/profil'
+      fullPath: '/profil'
+      preLoaderRoute: typeof ProfilRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ordonnance': {
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   AideRoute: AideRoute,
   AuthRoute: AuthRoute,
   OrdonnanceRoute: OrdonnanceRoute,
+  ProfilRoute: ProfilRoute,
   RechercheRoute: RechercheRoute,
   ReservationsRoute: ReservationsRoute,
   ConfirmationReservationIdRoute: ConfirmationReservationIdRoute,
