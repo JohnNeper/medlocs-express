@@ -17,7 +17,25 @@ export function LeafletMap({
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) {
+  const icons = useMemo(() => {
+    if (!mounted) return null;
+    // Dynamic require so Leaflet only loads in the browser
+    const L = require("leaflet") as typeof import("leaflet");
+    return {
+      pharmacy: L.divIcon({
+        className: "medlocs-pin",
+        html: `<div style="width:32px;height:32px;border-radius:50%;background:white;border:3px solid oklch(0.62 0.13 165);display:grid;place-items:center;box-shadow:0 4px 12px rgba(0,0,0,.2);font-size:16px;">💊</div>`,
+        iconSize: [32, 32], iconAnchor: [16, 16],
+      }),
+      duty: L.divIcon({
+        className: "medlocs-pin",
+        html: `<div style="width:34px;height:34px;border-radius:50%;background:oklch(0.62 0.13 165);border:3px solid white;display:grid;place-items:center;color:white;box-shadow:0 4px 14px oklch(0.62 0.13 165 / .6);font-size:14px;font-weight:bold;">⏰</div>`,
+        iconSize: [34, 34], iconAnchor: [17, 17],
+      }),
+    };
+  }, [mounted]);
+
+  if (!mounted || !icons) {
     return (
       <div className={`w-full ${height} rounded-2xl bg-primary-soft animate-pulse`} />
     );
