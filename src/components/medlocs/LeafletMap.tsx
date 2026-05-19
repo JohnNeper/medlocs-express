@@ -1,33 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from "react-leaflet";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { PHARMACIES, type Pharmacy } from "@/lib/medlocs-data";
-
-// Fix default marker icon paths for bundlers
-const pharmacyIcon = L.divIcon({
-  className: "medlocs-pin",
-  html: `<div style="
-    width:32px;height:32px;border-radius:50%;
-    background:white;border:3px solid oklch(0.62 0.13 165);
-    display:grid;place-items:center;
-    box-shadow:0 4px 12px rgba(0,0,0,.2);
-    font-size:16px;">💊</div>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-});
-
-const dutyIcon = L.divIcon({
-  className: "medlocs-pin",
-  html: `<div style="
-    width:34px;height:34px;border-radius:50%;
-    background:oklch(0.62 0.13 165);border:3px solid white;
-    display:grid;place-items:center;color:white;
-    box-shadow:0 4px 14px oklch(0.62 0.13 165 / .6);
-    font-size:14px;font-weight:bold;">⏰</div>`,
-  iconSize: [34, 34],
-  iconAnchor: [17, 17],
-});
 
 export function LeafletMap({
   height = "h-64",
