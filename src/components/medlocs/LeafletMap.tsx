@@ -65,7 +65,7 @@ export function LeafletMap({
           <Marker
             key={p.id}
             position={[p.lat, p.lng]}
-            icon={p.onDuty ? dutyIcon : pharmacyIcon}
+            icon={p.onDuty ? icons.duty : icons.pharmacy}
             eventHandlers={{ click: () => onPharmacyClick?.(p) }}
           >
             <Popup>
