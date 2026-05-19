@@ -23,11 +23,12 @@ export const Route = createFileRoute("/recherche")({
 });
 
 function SearchResultsPage() {
-  const { q, filter } = Route.useSearch();
+  const { q, filter: initialFilter } = Route.useSearch();
   const navigate = useNavigate();
   const med = useMemo(() => findMedication(q), [q]);
   const prescription = useStore((s) => s.prescription);
   const [infoFor, setInfoFor] = useState<Pharmacy | null>(null);
+  const [filter, setFilter] = useState<"open" | "duty" | "near" | null>(initialFilter ?? null);
 
   const pharmacies = useMemo(() => {
     let list = [...PHARMACIES].sort((a, b) => a.distanceM - b.distanceM);
