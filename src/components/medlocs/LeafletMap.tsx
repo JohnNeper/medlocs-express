@@ -20,8 +20,6 @@ export function LeafletMap({
 
   const icons = useMemo(() => {
     if (!mounted) return null;
-    // Dynamic require so Leaflet only loads in the browser
-    const L = require("leaflet") as typeof import("leaflet");
     return {
       pharmacy: L.divIcon({
         className: "medlocs-pin",
