@@ -60,7 +60,7 @@ function ReservationPage() {
         <Link to="/recherche" search={{ q }} className="grid place-items-center h-10 w-10 rounded-xl border border-border bg-card">
           <ChevronLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-base font-bold">Confirmation</h1>
+        <h1 className="text-base font-bold">{t("confirmation")}</h1>
       </header>
 
       <div className="px-5 space-y-4">
