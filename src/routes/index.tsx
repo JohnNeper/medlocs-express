@@ -159,7 +159,7 @@ function HomePage() {
           <div className="mt-3 space-y-3">
             {filteredPharmacies.length === 0 && (
               <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                Aucune pharmacie pour ces filtres.
+                {t("none_match")}
               </div>
             )}
             {filteredPharmacies.slice(0, filter ? 8 : 4).map((p) => (
@@ -175,7 +175,7 @@ function HomePage() {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-sm leading-tight truncate">{p.name}</h3>
                     <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-full ${p.open ? "bg-primary-soft text-primary" : "bg-muted text-muted-foreground"}`}>
-                      {p.open ? "Ouvert" : "Fermé"}
+                      {p.open ? t("open") : t("closed")}
                     </span>
                   </div>
                   <p className="text-[11px] text-muted-foreground truncate mt-0.5">{p.landmark}</p>
@@ -183,7 +183,7 @@ function HomePage() {
                     <span className="inline-flex items-center gap-1 font-medium"><Navigation className="h-3 w-3 text-primary" /> {p.distance}</span>
                     {p.onDuty && (
                       <span className="inline-flex items-center gap-1 text-warning-foreground bg-warning/30 rounded-full px-1.5 py-0.5 font-semibold">
-                        <Clock className="h-2.5 w-2.5" /> De garde
+                        <Clock className="h-2.5 w-2.5" /> {t("on_duty")}
                       </span>
                     )}
                     <span className="text-muted-foreground">· {p.hours}</span>
@@ -197,8 +197,8 @@ function HomePage() {
 
         <section className="mt-7">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Promotions parapharmacie</h2>
-            <span className="text-xs text-muted-foreground">Sans ordonnance</span>
+            <h2 className="text-base font-semibold">{t("promos")}</h2>
+            <span className="text-xs text-muted-foreground">{t("no_prescription")}</span>
           </div>
           <div className="mt-3 flex gap-3 overflow-x-auto no-scrollbar -mx-5 px-5 pb-2">
             {PROMOS.map((p) => (
