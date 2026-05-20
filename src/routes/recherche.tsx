@@ -26,6 +26,7 @@ export const Route = createFileRoute("/recherche")({
 function SearchResultsPage() {
   const { q, filter: initialFilter } = Route.useSearch();
   const navigate = useNavigate();
+  const t = useT();
   const med = useMemo(() => findMedication(q), [q]);
   const prescription = useStore((s) => s.prescription);
   const [infoFor, setInfoFor] = useState<Pharmacy | null>(null);
