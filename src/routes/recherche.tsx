@@ -5,6 +5,7 @@ import { PHARMACIES, findMedication, type Pharmacy } from "@/lib/medlocs-data";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { PharmacyInfoDrawer } from "@/components/medlocs/PharmacyInfoDrawer";
 import { useStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 type Search = { q: string; filter?: "open" | "duty" | "near" };
 
