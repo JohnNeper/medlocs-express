@@ -3,6 +3,7 @@ import { ChevronLeft, MapPin, ShieldCheck, FileText, CheckCircle2 } from "lucide
 import { getPharmacy, findMedication } from "@/lib/medlocs-data";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 type Search = { q: string };
 
@@ -18,6 +19,7 @@ function ReservationPage() {
   const { pharmacyId } = Route.useParams();
   const { q } = Route.useSearch();
   const navigate = useNavigate();
+  const t = useT();
   const user = useStore((s) => s.user);
   const prescription = useStore((s) => s.prescription);
 
@@ -58,7 +60,7 @@ function ReservationPage() {
         <Link to="/recherche" search={{ q }} className="grid place-items-center h-10 w-10 rounded-xl border border-border bg-card">
           <ChevronLeft className="h-5 w-5" />
         </Link>
-        <h1 className="text-base font-bold">Confirmation</h1>
+        <h1 className="text-base font-bold">{t("confirmation")}</h1>
       </header>
 
       <div className="px-5 space-y-4">
@@ -75,7 +77,7 @@ function ReservationPage() {
             </div>
           </div>
           <div className="p-4">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Officine sélectionnée</p>
+            <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("selected_pharmacy")}</p>
             <h3 className="mt-0.5 font-semibold">{pharmacy.name}</h3>
             <p className="text-xs text-muted-foreground">{pharmacy.address} · {pharmacy.distance}</p>
             <p className="text-xs text-muted-foreground mt-1">{pharmacy.landmark}</p>
@@ -83,10 +85,10 @@ function ReservationPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
-          <p className="text-xs text-muted-foreground">Médicament</p>
+          <p className="text-xs text-muted-foreground">{t("medication")}</p>
           <p className="font-semibold">{med.name}</p>
           <div className="my-4 h-px bg-border" />
-          <p className="text-xs text-muted-foreground">Montant de votre ordonnance</p>
+          <p className="text-xs text-muted-foreground">{t("order_amount")}</p>
           <p className="mt-1 text-4xl font-bold tracking-tight">
             {pharmacy.price.toLocaleString("fr-FR")} <span className="text-lg font-semibold text-muted-foreground">FCFA</span>
           </p>
@@ -94,7 +96,7 @@ function ReservationPage() {
           <div className="flex items-start gap-3 text-sm">
             <ShieldCheck className="h-5 w-5 text-primary mt-0.5 shrink-0" />
             <p className="text-muted-foreground leading-relaxed">
-              Tarif confidentiel négocié avec <span className="text-foreground font-medium">{pharmacy.name}</span>. Stock réservé pendant 2h.
+              {t("confidential_price")} <span className="text-foreground font-medium">{pharmacy.name}</span>{t("stock_held")}
             </p>
           </div>
         </div>
@@ -105,11 +107,11 @@ function ReservationPage() {
               <CheckCircle2 className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] uppercase tracking-wider text-primary font-bold">Ordonnance jointe</p>
+              <p className="text-[11px] uppercase tracking-wider text-primary font-bold">{t("prescription_attached")}</p>
               <p className="text-sm font-semibold truncate">{prescription.name}</p>
             </div>
             <Link to="/ordonnance" search={{ q, next: `/reservation/${pharmacyId}?q=${encodeURIComponent(q)}` }} className="text-xs font-semibold text-primary">
-              Changer
+              {t("change")}
             </Link>
           </div>
         )}
@@ -124,8 +126,8 @@ function ReservationPage() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Ordonnance requise</p>
-              <p className="text-xs text-muted-foreground">Téléversez votre prescription</p>
+              <p className="text-sm font-semibold">{t("rx_required_short")}</p>
+              <p className="text-xs text-muted-foreground">{t("upload_yours")}</p>
             </div>
           </Link>
         )}
@@ -134,12 +136,12 @@ function ReservationPage() {
           onClick={onConfirm}
           className="w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-4 shadow-pop active:scale-[0.99] transition"
         >
-          Confirmer et Bloquer mon Ordonnance
+          {t("confirm_block")}
         </button>
 
         <p className="text-center text-xs text-muted-foreground leading-relaxed px-4">
-          Frais de service d'ordonnance : <span className="font-semibold text-foreground">200 FCFA</span> payables via
-          <span className="font-semibold text-foreground"> MTN MoMo / Orange Money</span> lors de la validation.
+          {t("service_fee_note")} <span className="font-semibold text-foreground">200 FCFA</span> {t("payable_via")}
+          <span className="font-semibold text-foreground"> MTN MoMo / Orange Money</span> {t("on_validation")}
         </p>
       </div>
     </AppShell>

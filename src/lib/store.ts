@@ -16,14 +16,17 @@ export type Reservation = {
 
 export type Prescription = { name: string; uploadedAt: number } | null;
 
+export type KnownAccount = { name: string; phone: string };
+
 type State = {
   user: User;
   reservations: Reservation[];
   prescription: Prescription;
+  knownAccounts: KnownAccount[];
 };
 
 const KEY = "medlocs-state-v1";
-const initial: State = { user: null, reservations: [], prescription: null };
+const initial: State = { user: null, reservations: [], prescription: null, knownAccounts: [] };
 
 let state: State = initial;
 const listeners = new Set<() => void>();
@@ -64,8 +67,20 @@ export const store = {
     return () => listeners.delete(cb);
   },
   setUser(user: User) {
-    state = { ...state, user };
+    if (user) {
+      const exists = state.knownAccounts.some((a) => a.phone === user.phone);
+      const knownAccounts = exists
+        ? state.knownAccounts.map((a) => (a.phone === user.phone ? { ...a, name: user.name } : a))
+        : [...state.knownAccounts, { name: user.name, phone: user.phone }];
+      state = { ...state, user, knownAccounts };
+    } else {
+      state = { ...state, user };
+    }
     persist();
+  },
+  findAccount(phone: string): KnownAccount | undefined {
+    ensureHydrated();
+    return state.knownAccounts.find((a) => a.phone === phone);
   },
   signOut() {
     state = { ...state, user: null };

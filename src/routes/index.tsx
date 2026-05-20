@@ -5,6 +5,7 @@ import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
 import { AppShell } from "@/components/medlocs/AppShell";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,6 +21,7 @@ type Filter = "open" | "duty" | "near" | null;
 
 function HomePage() {
   const navigate = useNavigate();
+  const t = useT();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>(null);
   const [city, setCity] = useState<string>("Bafoussam");
@@ -76,7 +78,7 @@ function HomePage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher un médicament..."
+            placeholder={t("search_placeholder")}
             className="flex-1 bg-transparent outline-none text-[15px]"
           />
           <button type="button" onClick={() => setShowFilters(true)} className="grid place-items-center h-9 w-9 rounded-xl bg-primary-soft text-primary" aria-label="Filtres">
@@ -85,7 +87,7 @@ function HomePage() {
           <Link
             to="/ordonnance"
             className="grid place-items-center h-9 w-9 rounded-xl bg-primary text-primary-foreground"
-            title="Rechercher avec une ordonnance"
+            title={t("have_prescription")}
           >
             <FileText className="h-4 w-4" />
           </Link>
@@ -93,9 +95,9 @@ function HomePage() {
 
         <div className="mt-4 flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1">
           {[
-            { id: "open" as const, label: "🟢 Ouvert" },
-            { id: "duty" as const, label: "⏰ De garde" },
-            { id: "near" as const, label: "📍 Les plus proches" },
+            { id: "open" as const, label: t("filter_open") },
+            { id: "duty" as const, label: t("filter_duty") },
+            { id: "near" as const, label: t("filter_near") },
           ].map((f) => {
             const active = filter === f.id;
             return (
@@ -140,8 +142,8 @@ function HomePage() {
             <FileText className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold">J'ai une ordonnance</p>
-            <p className="text-xs text-muted-foreground">Photo ou PDF — on trouve l'officine pour vous</p>
+            <p className="text-sm font-semibold">{t("have_prescription")}</p>
+            <p className="text-xs text-muted-foreground">{t("have_prescription_sub")}</p>
           </div>
           <ChevronRight className="h-5 w-5 text-primary" />
         </Link>
@@ -150,14 +152,14 @@ function HomePage() {
         <section className="mt-7">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold">
-              Pharmacies {filter === "open" ? "ouvertes" : filter === "duty" ? "de garde" : filter === "near" ? "proches" : "à proximité"}
+              {filter === "open" ? t("pharmacies_open") : filter === "duty" ? t("pharmacies_duty") : filter === "near" ? t("pharmacies_near") : t("pharmacies_around")}
             </h2>
-            <span className="text-xs text-muted-foreground">{filteredPharmacies.length} trouvées</span>
+            <span className="text-xs text-muted-foreground">{filteredPharmacies.length} {t("found")}</span>
           </div>
           <div className="mt-3 space-y-3">
             {filteredPharmacies.length === 0 && (
               <div className="rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                Aucune pharmacie pour ces filtres.
+                {t("none_match")}
               </div>
             )}
             {filteredPharmacies.slice(0, filter ? 8 : 4).map((p) => (
@@ -173,7 +175,7 @@ function HomePage() {
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-sm leading-tight truncate">{p.name}</h3>
                     <span className={`text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded-full ${p.open ? "bg-primary-soft text-primary" : "bg-muted text-muted-foreground"}`}>
-                      {p.open ? "Ouvert" : "Fermé"}
+                      {p.open ? t("open") : t("closed")}
                     </span>
                   </div>
                   <p className="text-[11px] text-muted-foreground truncate mt-0.5">{p.landmark}</p>
@@ -181,7 +183,7 @@ function HomePage() {
                     <span className="inline-flex items-center gap-1 font-medium"><Navigation className="h-3 w-3 text-primary" /> {p.distance}</span>
                     {p.onDuty && (
                       <span className="inline-flex items-center gap-1 text-warning-foreground bg-warning/30 rounded-full px-1.5 py-0.5 font-semibold">
-                        <Clock className="h-2.5 w-2.5" /> De garde
+                        <Clock className="h-2.5 w-2.5" /> {t("on_duty")}
                       </span>
                     )}
                     <span className="text-muted-foreground">· {p.hours}</span>
@@ -195,8 +197,8 @@ function HomePage() {
 
         <section className="mt-7">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Promotions parapharmacie</h2>
-            <span className="text-xs text-muted-foreground">Sans ordonnance</span>
+            <h2 className="text-base font-semibold">{t("promos")}</h2>
+            <span className="text-xs text-muted-foreground">{t("no_prescription")}</span>
           </div>
           <div className="mt-3 flex gap-3 overflow-x-auto no-scrollbar -mx-5 px-5 pb-2">
             {PROMOS.map((p) => (
@@ -211,7 +213,7 @@ function HomePage() {
                 <h3 className="mt-3 text-lg font-bold leading-tight">{p.title}</h3>
                 <p className="mt-1 text-sm opacity-90">{p.subtitle}</p>
                 <button className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-                  Découvrir <ChevronRight className="h-4 w-4" />
+                  {t("discover")} <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
             ))}
@@ -220,7 +222,7 @@ function HomePage() {
 
         <section className="mt-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Produits populaires</h2>
+            <h2 className="text-base font-semibold">{t("popular_products")}</h2>
             {category && (
               <button onClick={() => setCategory(null)} className="text-xs font-semibold text-primary inline-flex items-center gap-1">
                 {category} <X className="h-3 w-3" />
@@ -248,7 +250,7 @@ function HomePage() {
                 <p className="mt-0.5 text-sm font-semibold leading-tight">{p.name}</p>
                 <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-[11px] font-semibold text-primary">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  Disponible à proximité
+                  {t("available_nearby")}
                 </div>
               </button>
             ))}
@@ -263,12 +265,12 @@ function HomePage() {
           <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[440px] rounded-t-3xl bg-card p-5 shadow-pop">
             <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-border" />
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-lg">Filtres avancés</h3>
+              <h3 className="font-bold text-lg">{t("advanced_filters")}</h3>
               <button onClick={() => setShowFilters(false)}><X className="h-5 w-5 text-muted-foreground" /></button>
             </div>
 
             <div className="mt-5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ville</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("city")}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {CITIES.map((c) => (
                   <button
@@ -283,13 +285,13 @@ function HomePage() {
             </div>
 
             <div className="mt-5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Catégorie de médicament</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("category")}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <button
                   onClick={() => setCategory(null)}
                   className={`rounded-full px-3 py-1.5 text-sm font-medium border ${!category ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border"}`}
                 >
-                  Toutes
+                  {t("all")}
                 </button>
                 {CATEGORIES.map((c) => (
                   <button
@@ -305,7 +307,7 @@ function HomePage() {
 
             <div className="mt-5">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Distance maximale</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("max_distance")}</p>
                 <span className="text-sm font-bold text-primary">{(maxDist / 1000).toFixed(1)} km</span>
               </div>
               <input
@@ -326,7 +328,7 @@ function HomePage() {
               onClick={() => setShowFilters(false)}
               className="mt-6 w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-3.5 shadow-pop"
             >
-              Voir {filteredPharmacies.length} pharmacie{filteredPharmacies.length > 1 ? "s" : ""}
+              {t("see")} {filteredPharmacies.length} {filteredPharmacies.length > 1 ? t("pharmacies") : t("pharmacy")}
             </button>
           </div>
         </div>

@@ -5,6 +5,7 @@ import { PHARMACIES, findMedication, type Pharmacy } from "@/lib/medlocs-data";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { PharmacyInfoDrawer } from "@/components/medlocs/PharmacyInfoDrawer";
 import { useStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 type Search = { q: string; filter?: "open" | "duty" | "near" };
 
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/recherche")({
 function SearchResultsPage() {
   const { q, filter: initialFilter } = Route.useSearch();
   const navigate = useNavigate();
+  const t = useT();
   const med = useMemo(() => findMedication(q), [q]);
   const prescription = useStore((s) => s.prescription);
   const [infoFor, setInfoFor] = useState<Pharmacy | null>(null);
@@ -46,12 +48,12 @@ function SearchResultsPage() {
           <ChevronLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Résultats pour</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("results_for")}</p>
           <h1 className="text-base font-bold leading-tight truncate">{med.name}</h1>
         </div>
         {med.prescription && (
           <span className="text-[10px] font-bold uppercase text-warning-foreground bg-warning/40 rounded-full px-2 py-1">
-            Ordonnance
+            {t("prescription_badge")}
           </span>
         )}
       </header>
@@ -67,19 +69,19 @@ function SearchResultsPage() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold leading-tight">Médicament sur ordonnance</p>
-              <p className="text-xs text-muted-foreground">Téléversez votre ordonnance pour réserver</p>
+              <p className="text-sm font-semibold leading-tight">{t("rx_required")}</p>
+              <p className="text-xs text-muted-foreground">{t("rx_upload")}</p>
             </div>
-            <span className="text-xs font-bold text-warning-foreground">Joindre</span>
+            <span className="text-xs font-bold text-warning-foreground">{t("attach")}</span>
           </Link>
         )}
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1 mb-3">
           {[
-            { id: null, label: "Toutes" },
-            { id: "open" as const, label: "🟢 Ouvert" },
-            { id: "duty" as const, label: "⏰ De garde" },
-            { id: "near" as const, label: "📍 Proches" },
+            { id: null, label: t("all") },
+            { id: "open" as const, label: t("filter_open") },
+            { id: "duty" as const, label: t("filter_duty") },
+            { id: "near" as const, label: t("filter_near") },
           ].map((f) => {
             const active = filter === f.id;
             return (
@@ -101,8 +103,8 @@ function SearchResultsPage() {
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold leading-tight">{pharmacies.length} officines synchronisées</p>
-            <p className="text-xs text-muted-foreground">Triées par distance — données temps réel</p>
+            <p className="text-sm font-semibold leading-tight">{pharmacies.length} {t("synchronized")}</p>
+            <p className="text-xs text-muted-foreground">{t("sorted_by_dist")}</p>
           </div>
         </div>
 
@@ -121,7 +123,7 @@ function SearchResultsPage() {
                         p.open ? "bg-primary-soft text-primary" : "bg-muted text-muted-foreground"
                       }`}
                     >
-                      {p.open ? "Ouvert" : "Fermé"}
+                      {p.open ? t("open") : t("closed")}
                     </span>
                   </div>
                   <p className="mt-0.5 text-xs text-muted-foreground truncate">{p.address}</p>
@@ -131,7 +133,7 @@ function SearchResultsPage() {
                     </span>
                     {p.onDuty && (
                       <span className="inline-flex items-center gap-1 text-warning-foreground bg-warning/30 rounded-full px-2 py-0.5 font-semibold">
-                        <Clock className="h-3 w-3" /> De garde
+                        <Clock className="h-3 w-3" /> {t("on_duty")}
                       </span>
                     )}
                   </div>
@@ -143,7 +145,7 @@ function SearchResultsPage() {
                   onClick={() => navigate({ to: "/reservation/$pharmacyId", params: { pharmacyId: p.id }, search: { q } })}
                   className="flex-1 rounded-xl bg-gradient-primary text-primary-foreground font-semibold py-3 shadow-pop active:scale-[0.99] transition"
                 >
-                  Voir le prix &amp; Réserver
+                  {t("see_price_book")}
                 </button>
                 <button
                   onClick={() => setInfoFor(p)}
@@ -151,7 +153,7 @@ function SearchResultsPage() {
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/40 transition"
                 >
                   <Info className="h-3.5 w-3.5" />
-                  Infos
+                  {t("infos")}
                 </button>
               </div>
             </article>

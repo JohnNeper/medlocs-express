@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { ChevronLeft, FileText, Upload, CheckCircle2, ShieldCheck, X } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
@@ -20,6 +20,7 @@ export const Route = createFileRoute("/ordonnance")({
 function OrdonnancePage() {
   const { q, next } = Route.useSearch();
   const navigate = useNavigate();
+  const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const prescription = useStore((s) => s.prescription);
   const [picked, setPicked] = useState<string | null>(prescription?.name ?? null);
@@ -31,7 +32,7 @@ function OrdonnancePage() {
   };
 
   const onContinue = () => {
-    if (next) navigate({ to: next as any });
+    if (next) router.navigate({ href: next });
     else navigate({ to: "/recherche", search: { q: q || "Amoxicilline 1g" } });
   };
 

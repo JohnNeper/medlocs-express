@@ -1,15 +1,17 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Ticket, LifeBuoy, User } from "lucide-react";
-
-const items = [
-  { to: "/", label: "Accueil", icon: Home },
-  { to: "/reservations", label: "Réservations", icon: Ticket },
-  { to: "/aide", label: "Aide", icon: LifeBuoy },
-  { to: "/profil", label: "Profil", icon: User },
-] as const;
+import { useT } from "@/lib/i18n";
+import { InstallPrompt } from "./InstallPrompt";
 
 export function BottomNav() {
   const { pathname } = useLocation();
+  const t = useT();
+  const items = [
+    { to: "/", label: t("nav_home"), icon: Home },
+    { to: "/reservations", label: t("nav_reservations"), icon: Ticket },
+    { to: "/aide", label: t("nav_help"), icon: LifeBuoy },
+    { to: "/profil", label: t("nav_profile"), icon: User },
+  ] as const;
   return (
     <nav className="fixed bottom-0 inset-x-0 z-40 pointer-events-none">
       <div className="mx-auto max-w-[440px] px-3 pb-3 pointer-events-auto">
@@ -42,6 +44,7 @@ export function AppShell({ children, hideNav = false }: { children: React.ReactN
       <div className={`relative mx-auto max-w-[440px] min-h-screen bg-background shadow-card ${hideNav ? "pb-8" : "pb-28"}`}>
         {children}
         {!hideNav && <BottomNav />}
+        <InstallPrompt />
       </div>
     </div>
   );
