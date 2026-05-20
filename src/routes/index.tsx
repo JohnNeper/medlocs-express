@@ -21,6 +21,7 @@ type Filter = "open" | "duty" | "near" | null;
 
 function HomePage() {
   const navigate = useNavigate();
+  const t = useT();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>(null);
   const [city, setCity] = useState<string>("Bafoussam");
