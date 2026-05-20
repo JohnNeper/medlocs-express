@@ -77,7 +77,7 @@ function ReservationPage() {
             </div>
           </div>
           <div className="p-4">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Officine sélectionnée</p>
+            <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("selected_pharmacy")}</p>
             <h3 className="mt-0.5 font-semibold">{pharmacy.name}</h3>
             <p className="text-xs text-muted-foreground">{pharmacy.address} · {pharmacy.distance}</p>
             <p className="text-xs text-muted-foreground mt-1">{pharmacy.landmark}</p>
@@ -85,10 +85,10 @@ function ReservationPage() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-5 shadow-card">
-          <p className="text-xs text-muted-foreground">Médicament</p>
+          <p className="text-xs text-muted-foreground">{t("medication")}</p>
           <p className="font-semibold">{med.name}</p>
           <div className="my-4 h-px bg-border" />
-          <p className="text-xs text-muted-foreground">Montant de votre ordonnance</p>
+          <p className="text-xs text-muted-foreground">{t("order_amount")}</p>
           <p className="mt-1 text-4xl font-bold tracking-tight">
             {pharmacy.price.toLocaleString("fr-FR")} <span className="text-lg font-semibold text-muted-foreground">FCFA</span>
           </p>
@@ -96,7 +96,7 @@ function ReservationPage() {
           <div className="flex items-start gap-3 text-sm">
             <ShieldCheck className="h-5 w-5 text-primary mt-0.5 shrink-0" />
             <p className="text-muted-foreground leading-relaxed">
-              Tarif confidentiel négocié avec <span className="text-foreground font-medium">{pharmacy.name}</span>. Stock réservé pendant 2h.
+              {t("confidential_price")} <span className="text-foreground font-medium">{pharmacy.name}</span>{t("stock_held")}
             </p>
           </div>
         </div>
