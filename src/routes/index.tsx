@@ -213,7 +213,7 @@ function HomePage() {
                 <h3 className="mt-3 text-lg font-bold leading-tight">{p.title}</h3>
                 <p className="mt-1 text-sm opacity-90">{p.subtitle}</p>
                 <button className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-                  Découvrir <ChevronRight className="h-4 w-4" />
+                  {t("discover")} <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
             ))}
@@ -222,7 +222,7 @@ function HomePage() {
 
         <section className="mt-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Produits populaires</h2>
+            <h2 className="text-base font-semibold">{t("popular_products")}</h2>
             {category && (
               <button onClick={() => setCategory(null)} className="text-xs font-semibold text-primary inline-flex items-center gap-1">
                 {category} <X className="h-3 w-3" />
