@@ -307,7 +307,7 @@ function HomePage() {
 
             <div className="mt-5">
               <div className="flex items-center justify-between">
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Distance maximale</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("max_distance")}</p>
                 <span className="text-sm font-bold text-primary">{(maxDist / 1000).toFixed(1)} km</span>
               </div>
               <input
@@ -328,7 +328,7 @@ function HomePage() {
               onClick={() => setShowFilters(false)}
               className="mt-6 w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-3.5 shadow-pop"
             >
-              Voir {filteredPharmacies.length} pharmacie{filteredPharmacies.length > 1 ? "s" : ""}
+              {t("see")} {filteredPharmacies.length} {filteredPharmacies.length > 1 ? t("pharmacies") : t("pharmacy")}
             </button>
           </div>
         </div>
