@@ -103,8 +103,8 @@ function SearchResultsPage() {
             <ShieldCheck className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold leading-tight">{pharmacies.length} officines synchronisées</p>
-            <p className="text-xs text-muted-foreground">Triées par distance — données temps réel</p>
+            <p className="text-sm font-semibold leading-tight">{pharmacies.length} {t("synchronized")}</p>
+            <p className="text-xs text-muted-foreground">{t("sorted_by_dist")}</p>
           </div>
         </div>
 
