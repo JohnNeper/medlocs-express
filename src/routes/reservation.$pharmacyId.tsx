@@ -3,6 +3,7 @@ import { ChevronLeft, MapPin, ShieldCheck, FileText, CheckCircle2 } from "lucide
 import { getPharmacy, findMedication } from "@/lib/medlocs-data";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 type Search = { q: string };
 
