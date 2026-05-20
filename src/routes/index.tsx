@@ -78,7 +78,7 @@ function HomePage() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Rechercher un médicament..."
+            placeholder={t("search_placeholder")}
             className="flex-1 bg-transparent outline-none text-[15px]"
           />
           <button type="button" onClick={() => setShowFilters(true)} className="grid place-items-center h-9 w-9 rounded-xl bg-primary-soft text-primary" aria-label="Filtres">
@@ -87,7 +87,7 @@ function HomePage() {
           <Link
             to="/ordonnance"
             className="grid place-items-center h-9 w-9 rounded-xl bg-primary text-primary-foreground"
-            title="Rechercher avec une ordonnance"
+            title={t("have_prescription")}
           >
             <FileText className="h-4 w-4" />
           </Link>
@@ -95,9 +95,9 @@ function HomePage() {
 
         <div className="mt-4 flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1">
           {[
-            { id: "open" as const, label: "🟢 Ouvert" },
-            { id: "duty" as const, label: "⏰ De garde" },
-            { id: "near" as const, label: "📍 Les plus proches" },
+            { id: "open" as const, label: t("filter_open") },
+            { id: "duty" as const, label: t("filter_duty") },
+            { id: "near" as const, label: t("filter_near") },
           ].map((f) => {
             const active = filter === f.id;
             return (
