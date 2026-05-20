@@ -123,7 +123,7 @@ function SearchResultsPage() {
                         p.open ? "bg-primary-soft text-primary" : "bg-muted text-muted-foreground"
                       }`}
                     >
-                      {p.open ? "Ouvert" : "Fermé"}
+                      {p.open ? t("open") : t("closed")}
                     </span>
                   </div>
                   <p className="mt-0.5 text-xs text-muted-foreground truncate">{p.address}</p>
@@ -133,7 +133,7 @@ function SearchResultsPage() {
                     </span>
                     {p.onDuty && (
                       <span className="inline-flex items-center gap-1 text-warning-foreground bg-warning/30 rounded-full px-2 py-0.5 font-semibold">
-                        <Clock className="h-3 w-3" /> De garde
+                        <Clock className="h-3 w-3" /> {t("on_duty")}
                       </span>
                     )}
                   </div>
@@ -145,7 +145,7 @@ function SearchResultsPage() {
                   onClick={() => navigate({ to: "/reservation/$pharmacyId", params: { pharmacyId: p.id }, search: { q } })}
                   className="flex-1 rounded-xl bg-gradient-primary text-primary-foreground font-semibold py-3 shadow-pop active:scale-[0.99] transition"
                 >
-                  Voir le prix &amp; Réserver
+                  {t("see_price_book")}
                 </button>
                 <button
                   onClick={() => setInfoFor(p)}
@@ -153,7 +153,7 @@ function SearchResultsPage() {
                   className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-3 text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-primary/40 transition"
                 >
                   <Info className="h-3.5 w-3.5" />
-                  Infos
+                  {t("infos")}
                 </button>
               </div>
             </article>
