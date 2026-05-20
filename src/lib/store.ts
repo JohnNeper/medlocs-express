@@ -82,6 +82,10 @@ export const store = {
     ensureHydrated();
     return state.knownAccounts.find((a) => a.phone === phone);
   },
+  signOut() {
+    state = { ...state, user: null };
+    persist();
+  },
   setPrescription(prescription: Prescription) {
     state = { ...state, prescription };
     persist();
