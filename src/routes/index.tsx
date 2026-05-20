@@ -142,8 +142,8 @@ function HomePage() {
             <FileText className="h-5 w-5" />
           </div>
           <div className="flex-1">
-            <p className="text-sm font-semibold">J'ai une ordonnance</p>
-            <p className="text-xs text-muted-foreground">Photo ou PDF — on trouve l'officine pour vous</p>
+            <p className="text-sm font-semibold">{t("have_prescription")}</p>
+            <p className="text-xs text-muted-foreground">{t("have_prescription_sub")}</p>
           </div>
           <ChevronRight className="h-5 w-5 text-primary" />
         </Link>
@@ -152,9 +152,9 @@ function HomePage() {
         <section className="mt-7">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold">
-              Pharmacies {filter === "open" ? "ouvertes" : filter === "duty" ? "de garde" : filter === "near" ? "proches" : "à proximité"}
+              {filter === "open" ? t("pharmacies_open") : filter === "duty" ? t("pharmacies_duty") : filter === "near" ? t("pharmacies_near") : t("pharmacies_around")}
             </h2>
-            <span className="text-xs text-muted-foreground">{filteredPharmacies.length} trouvées</span>
+            <span className="text-xs text-muted-foreground">{filteredPharmacies.length} {t("found")}</span>
           </div>
           <div className="mt-3 space-y-3">
             {filteredPharmacies.length === 0 && (
