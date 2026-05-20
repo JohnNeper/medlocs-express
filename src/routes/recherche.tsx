@@ -48,12 +48,12 @@ function SearchResultsPage() {
           <ChevronLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1 min-w-0">
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Résultats pour</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("results_for")}</p>
           <h1 className="text-base font-bold leading-tight truncate">{med.name}</h1>
         </div>
         {med.prescription && (
           <span className="text-[10px] font-bold uppercase text-warning-foreground bg-warning/40 rounded-full px-2 py-1">
-            Ordonnance
+            {t("prescription_badge")}
           </span>
         )}
       </header>
@@ -69,19 +69,19 @@ function SearchResultsPage() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold leading-tight">Médicament sur ordonnance</p>
-              <p className="text-xs text-muted-foreground">Téléversez votre ordonnance pour réserver</p>
+              <p className="text-sm font-semibold leading-tight">{t("rx_required")}</p>
+              <p className="text-xs text-muted-foreground">{t("rx_upload")}</p>
             </div>
-            <span className="text-xs font-bold text-warning-foreground">Joindre</span>
+            <span className="text-xs font-bold text-warning-foreground">{t("attach")}</span>
           </Link>
         )}
 
         <div className="flex gap-2 overflow-x-auto no-scrollbar -mx-1 px-1 pb-1 mb-3">
           {[
-            { id: null, label: "Toutes" },
-            { id: "open" as const, label: "🟢 Ouvert" },
-            { id: "duty" as const, label: "⏰ De garde" },
-            { id: "near" as const, label: "📍 Proches" },
+            { id: null, label: t("all") },
+            { id: "open" as const, label: t("filter_open") },
+            { id: "duty" as const, label: t("filter_duty") },
+            { id: "near" as const, label: t("filter_near") },
           ].map((f) => {
             const active = filter === f.id;
             return (
