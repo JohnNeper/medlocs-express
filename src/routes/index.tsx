@@ -250,7 +250,7 @@ function HomePage() {
                 <p className="mt-0.5 text-sm font-semibold leading-tight">{p.name}</p>
                 <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-primary-soft px-2.5 py-1 text-[11px] font-semibold text-primary">
                   <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                  Disponible à proximité
+                  {t("available_nearby")}
                 </div>
               </button>
             ))}
