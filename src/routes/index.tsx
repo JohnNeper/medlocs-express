@@ -265,12 +265,12 @@ function HomePage() {
           <div className="absolute inset-x-0 bottom-0 mx-auto max-w-[440px] rounded-t-3xl bg-card p-5 shadow-pop">
             <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-border" />
             <div className="flex items-center justify-between">
-              <h3 className="font-bold text-lg">Filtres avancés</h3>
+              <h3 className="font-bold text-lg">{t("advanced_filters")}</h3>
               <button onClick={() => setShowFilters(false)}><X className="h-5 w-5 text-muted-foreground" /></button>
             </div>
 
             <div className="mt-5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Ville</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("city")}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 {CITIES.map((c) => (
                   <button
@@ -285,13 +285,13 @@ function HomePage() {
             </div>
 
             <div className="mt-5">
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Catégorie de médicament</p>
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{t("category")}</p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <button
                   onClick={() => setCategory(null)}
                   className={`rounded-full px-3 py-1.5 text-sm font-medium border ${!category ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border"}`}
                 >
-                  Toutes
+                  {t("all")}
                 </button>
                 {CATEGORIES.map((c) => (
                   <button
