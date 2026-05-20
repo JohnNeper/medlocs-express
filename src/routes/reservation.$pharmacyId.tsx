@@ -107,11 +107,11 @@ function ReservationPage() {
               <CheckCircle2 className="h-5 w-5" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-[11px] uppercase tracking-wider text-primary font-bold">Ordonnance jointe</p>
+              <p className="text-[11px] uppercase tracking-wider text-primary font-bold">{t("prescription_attached")}</p>
               <p className="text-sm font-semibold truncate">{prescription.name}</p>
             </div>
             <Link to="/ordonnance" search={{ q, next: `/reservation/${pharmacyId}?q=${encodeURIComponent(q)}` }} className="text-xs font-semibold text-primary">
-              Changer
+              {t("change")}
             </Link>
           </div>
         )}
@@ -126,8 +126,8 @@ function ReservationPage() {
               <FileText className="h-5 w-5" />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold">Ordonnance requise</p>
-              <p className="text-xs text-muted-foreground">Téléversez votre prescription</p>
+              <p className="text-sm font-semibold">{t("rx_required_short")}</p>
+              <p className="text-xs text-muted-foreground">{t("upload_yours")}</p>
             </div>
           </Link>
         )}
@@ -136,12 +136,12 @@ function ReservationPage() {
           onClick={onConfirm}
           className="w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-4 shadow-pop active:scale-[0.99] transition"
         >
-          Confirmer et Bloquer mon Ordonnance
+          {t("confirm_block")}
         </button>
 
         <p className="text-center text-xs text-muted-foreground leading-relaxed px-4">
-          Frais de service d'ordonnance : <span className="font-semibold text-foreground">200 FCFA</span> payables via
-          <span className="font-semibold text-foreground"> MTN MoMo / Orange Money</span> lors de la validation.
+          {t("service_fee_note")} <span className="font-semibold text-foreground">200 FCFA</span> {t("payable_via")}
+          <span className="font-semibold text-foreground"> MTN MoMo / Orange Money</span> {t("on_validation")}
         </p>
       </div>
     </AppShell>
