@@ -19,6 +19,7 @@ function ReservationPage() {
   const { pharmacyId } = Route.useParams();
   const { q } = Route.useSearch();
   const navigate = useNavigate();
+  const t = useT();
   const user = useStore((s) => s.user);
   const prescription = useStore((s) => s.prescription);
 
