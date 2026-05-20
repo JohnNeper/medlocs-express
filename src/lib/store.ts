@@ -67,12 +67,20 @@ export const store = {
     return () => listeners.delete(cb);
   },
   setUser(user: User) {
-    state = { ...state, user };
+    if (user) {
+      const exists = state.knownAccounts.some((a) => a.phone === user.phone);
+      const knownAccounts = exists
+        ? state.knownAccounts.map((a) => (a.phone === user.phone ? { ...a, name: user.name } : a))
+        : [...state.knownAccounts, { name: user.name, phone: user.phone }];
+      state = { ...state, user, knownAccounts };
+    } else {
+      state = { ...state, user };
+    }
     persist();
   },
-  signOut() {
-    state = { ...state, user: null };
-    persist();
+  findAccount(phone: string): KnownAccount | undefined {
+    ensureHydrated();
+    return state.knownAccounts.find((a) => a.phone === phone);
   },
   setPrescription(prescription: Prescription) {
     state = { ...state, prescription };
