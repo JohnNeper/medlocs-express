@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { ChevronLeft, FileText, Upload, CheckCircle2, ShieldCheck, X } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
