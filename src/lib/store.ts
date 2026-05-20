@@ -16,14 +16,17 @@ export type Reservation = {
 
 export type Prescription = { name: string; uploadedAt: number } | null;
 
+export type KnownAccount = { name: string; phone: string };
+
 type State = {
   user: User;
   reservations: Reservation[];
   prescription: Prescription;
+  knownAccounts: KnownAccount[];
 };
 
 const KEY = "medlocs-state-v1";
-const initial: State = { user: null, reservations: [], prescription: null };
+const initial: State = { user: null, reservations: [], prescription: null, knownAccounts: [] };
 
 let state: State = initial;
 const listeners = new Set<() => void>();
