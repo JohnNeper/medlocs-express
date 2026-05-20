@@ -5,6 +5,7 @@ import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
 import { AppShell } from "@/components/medlocs/AppShell";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
   head: () => ({
