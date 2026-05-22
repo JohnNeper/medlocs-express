@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Ticket } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { Timeline } from "@/components/medlocs/Timeline";
-import { useStore } from "@/lib/store";
+import { store, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/reservations")({
   head: () => ({ meta: [{ title: "Mes réservations — MedLocs" }] }),
@@ -11,6 +12,15 @@ export const Route = createFileRoute("/reservations")({
 
 function ReservationsPage() {
   const reservations = useStore((s) => s.reservations);
+  const user = useStore((s) => s.user);
+
+  useEffect(() => {
+    store.syncReservations();
+    const interval = setInterval(() => {
+      store.syncReservations();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   return (
     <AppShell>

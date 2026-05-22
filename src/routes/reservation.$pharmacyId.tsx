@@ -5,11 +5,12 @@ import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
 import { useT } from "@/lib/i18n";
 
-type Search = { q: string };
+type Search = { q: string; price?: number };
 
 export const Route = createFileRoute("/reservation/$pharmacyId")({
   validateSearch: (s: Record<string, unknown>): Search => ({
     q: typeof s.q === "string" && s.q.length > 0 ? s.q : "Paracétamol 500mg",
+    price: typeof s.price === "number" ? s.price : !isNaN(Number(s.price)) ? Number(s.price) : undefined,
   }),
   head: () => ({ meta: [{ title: "Confirmation — MedLocs" }] }),
   component: ReservationPage,
@@ -17,14 +18,16 @@ export const Route = createFileRoute("/reservation/$pharmacyId")({
 
 function ReservationPage() {
   const { pharmacyId } = Route.useParams();
-  const { q } = Route.useSearch();
+  const { q, price: searchPrice } = Route.useSearch();
   const navigate = useNavigate();
   const t = useT();
   const user = useStore((s) => s.user);
   const prescription = useStore((s) => s.prescription);
+  const storePharmacies = useStore((s) => s.pharmacies);
 
-  const pharmacy = getPharmacy(pharmacyId);
+  const pharmacy = storePharmacies.find((p) => p.id === pharmacyId) || getPharmacy(pharmacyId);
   const med = findMedication(q);
+  const finalPrice = searchPrice ?? (pharmacy ? pharmacy.price : 0);
 
   if (!pharmacy) {
     return <Navigate to="/" />;
@@ -45,7 +48,7 @@ function ReservationPage() {
       med: med.name,
       pharmacyId: pharmacy.id,
       pharmacyName: pharmacy.name,
-      price: pharmacy.price,
+      price: finalPrice,
       hasPrescription: !!prescription,
       prescriptionName: prescription?.name,
     });
@@ -90,7 +93,7 @@ function ReservationPage() {
           <div className="my-4 h-px bg-border" />
           <p className="text-xs text-muted-foreground">{t("order_amount")}</p>
           <p className="mt-1 text-4xl font-bold tracking-tight">
-            {pharmacy.price.toLocaleString("fr-FR")} <span className="text-lg font-semibold text-muted-foreground">FCFA</span>
+            {finalPrice.toLocaleString("fr-FR")} <span className="text-lg font-semibold text-muted-foreground">FCFA</span>
           </p>
           <div className="my-4 h-px bg-border" />
           <div className="flex items-start gap-3 text-sm">

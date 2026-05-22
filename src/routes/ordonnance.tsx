@@ -1,8 +1,9 @@
 import { useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
-import { ChevronLeft, FileText, Upload, CheckCircle2, ShieldCheck, X } from "lucide-react";
+import { ChevronLeft, FileText, Upload, CheckCircle2, ShieldCheck, X, Loader2 } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
+import { reservationApi } from "@/lib/api";
 
 type Search = { q?: string; next?: string };
 
@@ -23,12 +24,33 @@ function OrdonnancePage() {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const prescription = useStore((s) => s.prescription);
-  const [picked, setPicked] = useState<string | null>(prescription?.name ?? null);
+  const [isUploading, setIsUploading] = useState(false);
+  const picked = prescription?.name;
 
-  const onPick = (file: File | null) => {
+  const onPick = async (file: File | null) => {
     if (!file) return;
-    setPicked(file.name);
-    store.setPrescription({ name: file.name, uploadedAt: Date.now() });
+    setIsUploading(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append("prescription", file);
+      
+      const data = await reservationApi.uploadPrescription(formData);
+      
+      if (data && data.code === "done") {
+        store.setPrescription({
+          name: file.name,
+          uploadedAt: Date.now(),
+          relativePath: data.relativePath
+        });
+      }
+    } catch (error) {
+      console.error("Prescription upload error:", error);
+      // Resilient fallback: save locally so flow isn't blocked
+      store.setPrescription({ name: file.name, uploadedAt: Date.now() });
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const onContinue = () => {
@@ -72,7 +94,17 @@ function OrdonnancePage() {
           onChange={(e) => onPick(e.target.files?.[0] ?? null)}
         />
 
-        {picked ? (
+        {isUploading ? (
+          <div className="w-full rounded-2xl border-2 border-dashed border-primary/40 bg-primary-soft/40 p-8 flex flex-col items-center gap-3">
+            <div className="grid place-items-center h-14 w-14 rounded-2xl bg-primary text-primary-foreground">
+              <Loader2 className="h-6 w-6 animate-spin" />
+            </div>
+            <div className="text-center">
+              <p className="font-semibold">Téléversement en cours...</p>
+              <p className="text-xs text-muted-foreground mt-1">Votre ordonnance est en cours d'envoi sécurisé</p>
+            </div>
+          </div>
+        ) : picked ? (
           <div className="rounded-2xl border border-primary/40 bg-primary-soft p-5">
             <div className="flex items-start gap-3">
               <div className="grid place-items-center h-11 w-11 rounded-2xl bg-primary text-primary-foreground">
@@ -84,7 +116,7 @@ function OrdonnancePage() {
                 <p className="text-xs text-muted-foreground">Prête à être transmise</p>
               </div>
               <button
-                onClick={() => { setPicked(null); store.setPrescription(null); }}
+                onClick={() => { store.setPrescription(null); }}
                 aria-label="Retirer"
                 className="grid place-items-center h-8 w-8 rounded-full border border-border bg-card"
               >
@@ -123,7 +155,7 @@ function OrdonnancePage() {
 
         <button
           onClick={onContinue}
-          disabled={!picked}
+          disabled={!picked || isUploading}
           className="w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-4 shadow-pop disabled:opacity-40 disabled:shadow-none transition active:scale-[0.99]"
         >
           Continuer

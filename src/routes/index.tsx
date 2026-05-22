@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X } from "lucide-react";
 import logo from "@/assets/logo.png";
@@ -6,6 +6,8 @@ import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-d
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { useT } from "@/lib/i18n";
+import { store, useStore } from "@/lib/store";
+import { pharmacyApi } from "@/lib/api";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,13 +31,46 @@ function HomePage() {
   const [maxDist, setMaxDist] = useState(5000);
   const [showFilters, setShowFilters] = useState(false);
 
+  const storePharmacies = useStore((s) => s.pharmacies);
+
+  useEffect(() => {
+    // Coordonnées par défaut de Bafoussam
+    const lat = 5.4800;
+    const lng = 10.4200;
+    pharmacyApi.getNearby(lat, lng, city)
+      .then(data => {
+        if (data && data.code === "done" && data.pharmacies) {
+          const mapped = data.pharmacies.map((p: any) => ({
+            id: p._id,
+            name: p.name,
+            landmark: p.address?.street || city,
+            distance: `À ${p.distanceKm ? p.distanceKm.toFixed(1) : 1.5} km`,
+            distanceM: (p.distanceKm || 1.5) * 1000,
+            hours: p.openingHours || "08:00 - 20:00",
+            closesAt: "20:00",
+            onDuty: p.services?.includes("Garde") || false,
+            open: p.isActive !== false,
+            lat: p.address?.coordinates?.lat || lat,
+            lng: p.address?.coordinates?.lng || lng,
+            city: p.address?.city || city,
+            address: p.address?.street || city,
+            price: 2500, // Prix de base par défaut
+            phone: p.owner?.phone || "+237 000 00 00 00"
+          }));
+          store.setPharmacies(mapped);
+        }
+      })
+      .catch(err => console.error("Erreur de chargement des pharmacies:", err));
+  }, [city]);
+
   const filteredPharmacies = useMemo(() => {
-    let list = PHARMACIES.filter((p) => p.city === city && p.distanceM <= maxDist);
+    const sourceList = storePharmacies.length > 0 ? storePharmacies : PHARMACIES;
+    let list = sourceList.filter((p) => p.city === city && p.distanceM <= maxDist);
     if (filter === "open") list = list.filter((p) => p.open);
     if (filter === "duty") list = list.filter((p) => p.onDuty);
     list = [...list].sort((a, b) => a.distanceM - b.distanceM);
     return list;
-  }, [filter, city, maxDist]);
+  }, [storePharmacies, filter, city, maxDist]);
 
   const filteredProducts = useMemo(() => {
     return category ? POPULAR.filter((p) => p.category === category) : POPULAR;

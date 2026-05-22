@@ -1,9 +1,10 @@
+import { useEffect } from "react";
 import { createFileRoute, Link, Navigate } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { QRCode } from "@/components/medlocs/QRCode";
 import { Timeline } from "@/components/medlocs/Timeline";
-import { useStore } from "@/lib/store";
+import { store, useStore } from "@/lib/store";
 
 export const Route = createFileRoute("/confirmation/$reservationId")({
   head: () => ({ meta: [{ title: "Réservation confirmée — MedLocs" }] }),
@@ -13,6 +14,15 @@ export const Route = createFileRoute("/confirmation/$reservationId")({
 function ConfirmationPage() {
   const { reservationId } = Route.useParams();
   const reservation = useStore((s) => s.reservations.find((r) => r.id === reservationId));
+  const user = useStore((s) => s.user);
+
+  useEffect(() => {
+    store.syncReservations();
+    const interval = setInterval(() => {
+      store.syncReservations();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   if (!reservation) return <Navigate to="/reservations" />;
 

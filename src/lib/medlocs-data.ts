@@ -1,3 +1,5 @@
+import { store } from "./store";
+
 export type Pharmacy = {
   id: string;
   name: string;
@@ -57,6 +59,8 @@ export function findMedication(query: string): Medication {
 }
 
 export function getPharmacy(id: string): Pharmacy | undefined {
+  const dynamic = store.get().pharmacies?.find((p) => p.id === id);
+  if (dynamic) return dynamic;
   return PHARMACIES.find((p) => p.id === id);
 }
 
