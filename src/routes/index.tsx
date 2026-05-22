@@ -5,6 +5,7 @@ import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
 import { AppShell } from "@/components/medlocs/AppShell";
+import { GeolocationBanner } from "@/components/medlocs/GeolocationBanner";
 import { useT } from "@/lib/i18n";
 import { store, useStore } from "@/lib/store";
 import { pharmacyApi } from "@/lib/api";
@@ -30,13 +31,13 @@ function HomePage() {
   const [category, setCategory] = useState<string | null>(null);
   const [maxDist, setMaxDist] = useState(5000);
   const [showFilters, setShowFilters] = useState(false);
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
 
   const storePharmacies = useStore((s) => s.pharmacies);
 
   useEffect(() => {
-    // Coordonnées par défaut de Bafoussam
-    const lat = 5.4800;
-    const lng = 10.4200;
+    const lat = userCoords?.lat ?? 5.4800;
+    const lng = userCoords?.lng ?? 10.4200;
     pharmacyApi.getNearby(lat, lng, city)
       .then(data => {
         if (data && data.code === "done" && data.pharmacies) {
@@ -54,14 +55,14 @@ function HomePage() {
             lng: p.address?.coordinates?.lng || lng,
             city: p.address?.city || city,
             address: p.address?.street || city,
-            price: 2500, // Prix de base par défaut
+            price: 2500,
             phone: p.owner?.phone || "+237 000 00 00 00"
           }));
           store.setPharmacies(mapped);
         }
       })
       .catch(err => console.error("Erreur de chargement des pharmacies:", err));
-  }, [city]);
+  }, [city, userCoords]);
 
   const filteredPharmacies = useMemo(() => {
     const sourceList = storePharmacies.length > 0 ? storePharmacies : PHARMACIES;
@@ -161,10 +162,15 @@ function HomePage() {
           </div>
         )}
 
+        <div className="mt-4">
+          <GeolocationBanner onCoords={setUserCoords} />
+        </div>
+
         <div className="mt-5">
           <LeafletMap
             height="h-56"
             pharmacies={filteredPharmacies}
+            center={userCoords ? [userCoords.lat, userCoords.lng] : undefined}
             onPharmacyClick={(p) => navigate({ to: "/reservation/$pharmacyId", params: { pharmacyId: p.id }, search: { q: query || "Paracétamol 500mg" } })}
           />
         </div>
