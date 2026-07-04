@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X } from "lucide-react";
+import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X, ShieldCheck, ScanLine, MessageCircle, AlertTriangle, Info } from "lucide-react";
+import { ALERTS } from "@/lib/alerts";
 import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
@@ -162,6 +163,41 @@ function HomePage() {
           </div>
         )}
 
+        {/* Bandeau Protection citoyenne — repositionnement cybersécurité sanitaire */}
+        <Link
+          to="/protection"
+          className="mt-4 block rounded-2xl bg-gradient-primary p-4 text-primary-foreground shadow-pop relative overflow-hidden active:scale-[0.99] transition"
+        >
+          <Sparkles className="absolute right-3 top-3 h-4 w-4 opacity-70" />
+          <div className="flex items-center gap-3">
+            <div className="grid place-items-center h-11 w-11 rounded-2xl bg-white/20 backdrop-blur">
+              <ShieldCheck className="h-5 w-5" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] uppercase tracking-widest font-bold opacity-90">
+                Protection citoyenne · IA
+              </p>
+              <p className="text-sm font-semibold leading-tight">
+                Faux médicaments, ordonnances suspectes, automédication
+              </p>
+            </div>
+            <ChevronRight className="h-4 w-4 opacity-80" />
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] font-semibold">
+            <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
+              <ScanLine className="h-3.5 w-3.5" /> Scanner
+            </div>
+            <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
+              <FileText className="h-3.5 w-3.5" /> Vérifier Rx
+            </div>
+            <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
+              <MessageCircle className="h-3.5 w-3.5" /> Sentinelle
+            </div>
+          </div>
+        </Link>
+
+
+
         <div className="mt-4">
           <GeolocationBanner onCoords={setUserCoords} />
         </div>
@@ -235,6 +271,45 @@ function HomePage() {
             ))}
           </div>
         </section>
+
+        {/* Alertes & Éducation numérique */}
+        <section className="mt-7">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold">Alertes & Conseils</h2>
+            <Link to="/protection" className="text-xs font-semibold text-primary inline-flex items-center gap-1">
+              Protection <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {ALERTS.map((a) => {
+              const tone =
+                a.severity === "danger"
+                  ? "border-destructive/40 bg-destructive/10 text-destructive"
+                  : a.severity === "warning"
+                    ? "border-warning/50 bg-warning/20 text-warning-foreground"
+                    : "border-primary/30 bg-primary-soft text-primary";
+              const Icon = a.severity === "info" ? Info : AlertTriangle;
+              return (
+                <div key={a.id} className={`rounded-2xl border p-3 ${tone}`}>
+                  <div className="flex items-start gap-2.5">
+                    <Icon className="h-4 w-4 mt-0.5 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-[9px] uppercase tracking-widest font-bold opacity-80">
+                          {a.tag}
+                        </p>
+                      </div>
+                      <p className="font-semibold text-sm leading-tight mt-0.5">{a.title}</p>
+                      <p className="text-xs opacity-90 leading-snug mt-1">{a.body}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+
 
         <section className="mt-7">
           <div className="flex items-center justify-between">
