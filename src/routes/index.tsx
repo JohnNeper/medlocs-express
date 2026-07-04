@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X } from "lucide-react";
+import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X, ShieldCheck, ScanLine, MessageCircle, AlertTriangle, Info } from "lucide-react";
+import { ALERTS } from "@/lib/alerts";
 import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
