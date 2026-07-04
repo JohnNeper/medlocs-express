@@ -272,6 +272,45 @@ function HomePage() {
           </div>
         </section>
 
+        {/* Alertes & Éducation numérique */}
+        <section className="mt-7">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold">Alertes & Conseils</h2>
+            <Link to="/protection" className="text-xs font-semibold text-primary inline-flex items-center gap-1">
+              Protection <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="mt-3 space-y-2">
+            {ALERTS.map((a) => {
+              const tone =
+                a.severity === "danger"
+                  ? "border-destructive/40 bg-destructive/10 text-destructive"
+                  : a.severity === "warning"
+                    ? "border-warning/50 bg-warning/20 text-warning-foreground"
+                    : "border-primary/30 bg-primary-soft text-primary";
+              const Icon = a.severity === "info" ? Info : AlertTriangle;
+              return (
+                <div key={a.id} className={`rounded-2xl border p-3 ${tone}`}>
+                  <div className="flex items-start gap-2.5">
+                    <Icon className="h-4 w-4 mt-0.5 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className="text-[9px] uppercase tracking-widest font-bold opacity-80">
+                          {a.tag}
+                        </p>
+                      </div>
+                      <p className="font-semibold text-sm leading-tight mt-0.5">{a.title}</p>
+                      <p className="text-xs opacity-90 leading-snug mt-1">{a.body}</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+
+
         <section className="mt-7">
           <div className="flex items-center justify-between">
             <h2 className="text-base font-semibold">{t("promos")}</h2>
