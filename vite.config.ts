@@ -1,12 +1,7 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-// Pure SPA build (no Cloudflare Worker / no server runtime).
-// The app talks to an external backend over HTTP from the browser.
+// SSR léger (Node) — nécessaire pour appeler Lovable AI Gateway côté serveur
+// sans exposer la LOVABLE_API_KEY au navigateur. Vercel auto-détecte TSS.
 export default defineConfig({
   cloudflare: false,
-  tanstackStart: {
-    spa: {
-      enabled: true,
-    },
-  },
 });
