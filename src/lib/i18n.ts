@@ -144,7 +144,70 @@ const DICT = {
 
   // Misc
   continue: { fr: "Continuer", en: "Continue" },
+
+  // Protection page
+  cyber_health: { fr: "Cybersécurité sanitaire", en: "Health cybersecurity" },
+  citizen_protection: { fr: "Protection citoyenne", en: "Citizen protection" },
+  ai_for_citizen: { fr: "IA au service du citoyen", en: "AI at the citizen's service" },
+  protection_intro: {
+    fr: "Détectez les faux médicaments, vérifiez une ordonnance et évitez l'automédication grâce à l'intelligence artificielle souveraine.",
+    en: "Detect fake medications, verify a prescription and avoid self-medication with sovereign artificial intelligence.",
+  },
+  tab_scanner: { fr: "Scanner", en: "Scanner" },
+  tab_prescription: { fr: "Ordonnance", en: "Prescription" },
+  tab_sentinel: { fr: "Sentinelle", en: "Sentinel" },
+  scan_intro: {
+    fr: "Prenez en photo l'emballage, le blister ou la notice d'un médicament pour détecter d'éventuelles contrefaçons.",
+    en: "Take a photo of the packaging, blister or leaflet to detect potential counterfeits.",
+  },
+  photograph_med: { fr: "Photographier le médicament", en: "Photograph the medication" },
+  photograph_hint: { fr: "Cadrez l'emballage et les mentions légales", en: "Frame the packaging and legal notices" },
+  retake: { fr: "Reprendre", en: "Retake" },
+  analyze_ai: { fr: "Analyser avec l'IA", en: "Analyze with AI" },
+  analyzing: { fr: "Analyse IA...", en: "AI analysis..." },
+  verdict_ai: { fr: "Verdict IA", en: "AI verdict" },
+  med_identified: { fr: "Médicament identifié", en: "Medication identified" },
+  signals_detected: { fr: "Signaux détectés", en: "Detected signals" },
+  rx_intro: {
+    fr: "L'IA vérifie l'authenticité et la cohérence de votre ordonnance avant toute réservation.",
+    en: "AI verifies the authenticity and coherence of your prescription before any booking.",
+  },
+  rx_upload_btn: { fr: "Téléverser l'ordonnance", en: "Upload the prescription" },
+  rx_upload_hint: { fr: "Photo lisible du document original", en: "Readable photo of the original document" },
+  verify_ai: { fr: "Vérifier avec l'IA", en: "Verify with AI" },
+  verifying: { fr: "Vérification...", en: "Verifying..." },
+  rx_status: { fr: "Statut ordonnance", en: "Prescription status" },
+  meds_detected: { fr: "Médicaments détectés", en: "Detected medications" },
+  points_to_check: { fr: "Points à vérifier", en: "Points to check" },
+  sentinel_greeting: {
+    fr: "Bonjour 👋 Je suis Sentinelle, votre garde-fou santé. Décrivez vos symptômes ou posez une question — je vous oriente sans jamais prescrire.\n\n⚠️ Ceci n'est pas un avis médical. Consultez un professionnel de santé.",
+    en: "Hello 👋 I am Sentinel, your health safeguard. Describe your symptoms or ask a question — I guide you without ever prescribing.\n\n⚠️ This is not medical advice. Consult a healthcare professional.",
+  },
+  sentinel_error: {
+    fr: "Désolé, je n'ai pas pu répondre. Réessayez ou rendez-vous en pharmacie agréée.\n\n⚠️ Ceci n'est pas un avis médical.",
+    en: "Sorry, I couldn't reply. Try again or visit an approved pharmacy.\n\n⚠️ This is not medical advice.",
+  },
+  sentinel_thinking: { fr: "Sentinelle réfléchit...", en: "Sentinel is thinking..." },
+  chat_placeholder: { fr: "Décrire un symptôme, une question...", en: "Describe a symptom, a question..." },
+  send: { fr: "Envoyer", en: "Send" },
+  emergency_footer: {
+    fr: "L'IA ne remplace pas un médecin. Urgence : 117 (police) · 118 (pompiers)",
+    en: "AI does not replace a doctor. Emergency: 117 (police) · 118 (fire)",
+  },
+  protection_footer: {
+    fr: "Données hébergées au Cameroun · IA locale · Pharmacies agréées",
+    en: "Data hosted in Cameroon · Local AI · Approved pharmacies",
+  },
+  analysis_error: { fr: "Erreur d'analyse", en: "Analysis error" },
+  verdict_authentique: { fr: "authentique", en: "authentic" },
+  verdict_suspect: { fr: "suspect", en: "suspicious" },
+  verdict_indetermine: { fr: "indéterminé", en: "undetermined" },
+  status_coherente: { fr: "cohérente", en: "coherent" },
+  status_incoherente: { fr: "incohérente", en: "inconsistent" },
+  status_suspecte: { fr: "suspecte", en: "suspicious" },
+  status_illisible: { fr: "illisible", en: "unreadable" },
 } as const;
+
 
 export type TKey = keyof typeof DICT;
 
