@@ -22,15 +22,16 @@ import {
   type ScanResult,
   type PrescriptionCheck,
 } from "@/lib/protection.functions";
+import { useLang, useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/protection")({
   head: () => ({
     meta: [
-      { title: "Protection citoyenne — MedLocs" },
+      { title: "Citizen protection — MedLocs" },
       {
         name: "description",
         content:
-          "Scanner IA de médicaments, vérification d'ordonnance et assistant anti-automédication — cybersécurité sanitaire au Cameroun.",
+          "AI medication scanner, prescription verification and anti-self-medication assistant — health cybersecurity in Cameroon.",
       },
     ],
   }),
@@ -41,6 +42,7 @@ type Tab = "scan" | "rx" | "chat";
 
 function ProtectionPage() {
   const [tab, setTab] = useState<Tab>("scan");
+  const t = useT();
   return (
     <AppShell>
       <header className="px-5 pt-6 pb-3 flex items-center gap-3">
@@ -49,9 +51,9 @@ function ProtectionPage() {
         </Link>
         <div className="flex-1">
           <p className="text-[10px] uppercase tracking-widest text-primary font-bold">
-            Cybersécurité sanitaire
+            {t("cyber_health")}
           </p>
-          <h1 className="text-lg font-bold leading-tight">Protection citoyenne</h1>
+          <h1 className="text-lg font-bold leading-tight">{t("citizen_protection")}</h1>
         </div>
         <div className="grid place-items-center h-10 w-10 rounded-xl bg-primary-soft text-primary">
           <ShieldCheck className="h-5 w-5" />
@@ -62,34 +64,29 @@ function ProtectionPage() {
         <div className="rounded-2xl bg-gradient-primary p-4 text-primary-foreground shadow-pop relative overflow-hidden">
           <Sparkles className="absolute right-3 top-3 h-4 w-4 opacity-80" />
           <p className="text-[10px] uppercase tracking-widest font-bold opacity-90">
-            IA au service du citoyen
+            {t("ai_for_citizen")}
           </p>
-          <p className="mt-1 text-sm leading-snug">
-            Détectez les faux médicaments, vérifiez une ordonnance et évitez
-            l'automédication grâce à l'intelligence artificielle souveraine.
-          </p>
+          <p className="mt-1 text-sm leading-snug">{t("protection_intro")}</p>
         </div>
 
         <div className="mt-4 grid grid-cols-3 gap-2 p-1 rounded-2xl bg-muted">
           {[
-            { id: "scan" as const, label: "Scanner", icon: ScanLine },
-            { id: "rx" as const, label: "Ordonnance", icon: FileCheck2 },
-            { id: "chat" as const, label: "Sentinelle", icon: MessageCircle },
-          ].map((t) => {
-            const active = tab === t.id;
-            const Icon = t.icon;
+            { id: "scan" as const, label: t("tab_scanner"), icon: ScanLine },
+            { id: "rx" as const, label: t("tab_prescription"), icon: FileCheck2 },
+            { id: "chat" as const, label: t("tab_sentinel"), icon: MessageCircle },
+          ].map((it) => {
+            const active = tab === it.id;
+            const Icon = it.icon;
             return (
               <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
+                key={it.id}
+                onClick={() => setTab(it.id)}
                 className={`flex flex-col items-center gap-1 py-2.5 rounded-xl text-[11px] font-semibold transition ${
-                  active
-                    ? "bg-card text-primary shadow-card"
-                    : "text-muted-foreground"
+                  active ? "bg-card text-primary shadow-card" : "text-muted-foreground"
                 }`}
               >
                 <Icon className="h-4 w-4" />
-                {t.label}
+                {it.label}
               </button>
             );
           })}
@@ -102,7 +99,7 @@ function ProtectionPage() {
         </div>
 
         <p className="mt-6 mb-2 text-[11px] text-muted-foreground text-center">
-          Données hébergées au Cameroun · IA locale · Pharmacies agréées
+          {t("protection_footer")}
         </p>
       </div>
     </AppShell>
@@ -116,6 +113,8 @@ function ScanPanel() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ScanResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const lang = useLang();
+  const t = useT();
 
   const onFile = async (f: File | null) => {
     if (!f) return;
@@ -131,10 +130,10 @@ function ScanPanel() {
     setLoading(true);
     setError(null);
     try {
-      const r = await scanMedication({ data: { imageDataUrl: img } });
+      const r = await scanMedication({ data: { imageDataUrl: img, lang } });
       setResult(r);
     } catch (e: any) {
-      setError(e?.message ?? "Erreur d'analyse");
+      setError(e?.message ?? t("analysis_error"));
     } finally {
       setLoading(false);
     }
@@ -142,10 +141,7 @@ function ScanPanel() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        Prenez en photo l'emballage, le blister ou la notice d'un médicament
-        pour détecter d'éventuelles contrefaçons.
-      </p>
+      <p className="text-sm text-muted-foreground">{t("scan_intro")}</p>
 
       <input
         ref={fileRef}
@@ -165,15 +161,13 @@ function ScanPanel() {
             <ScanLine className="h-6 w-6" />
           </div>
           <div className="text-center">
-            <p className="font-semibold">Photographier le médicament</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Cadrez l'emballage et les mentions légales
-            </p>
+            <p className="font-semibold">{t("photograph_med")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("photograph_hint")}</p>
           </div>
         </button>
       ) : (
         <div className="rounded-2xl overflow-hidden border border-border bg-card">
-          <img src={img} alt="Médicament" className="w-full max-h-64 object-cover" />
+          <img src={img} alt="" className="w-full max-h-64 object-cover" />
           <div className="p-3 flex gap-2">
             <button
               onClick={() => {
@@ -182,7 +176,7 @@ function ScanPanel() {
               }}
               className="flex-1 rounded-xl border border-border py-2 text-sm font-semibold"
             >
-              Reprendre
+              {t("retake")}
             </button>
             <button
               onClick={analyze}
@@ -191,10 +185,10 @@ function ScanPanel() {
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Analyse IA...
+                  <Loader2 className="h-4 w-4 animate-spin" /> {t("analyzing")}
                 </span>
               ) : (
-                "Analyser avec l'IA"
+                t("analyze_ai")
               )}
             </button>
           </div>
@@ -213,6 +207,7 @@ function ScanPanel() {
 }
 
 function ScanResultCard({ r }: { r: ScanResult }) {
+  const t = useT();
   const color =
     r.verdict === "authentique"
       ? "bg-primary-soft border-primary/40 text-primary"
@@ -220,32 +215,33 @@ function ScanResultCard({ r }: { r: ScanResult }) {
         ? "bg-destructive/10 border-destructive/40 text-destructive"
         : "bg-warning/20 border-warning/50 text-warning-foreground";
 
-  const Icon =
-    r.verdict === "authentique" ? CheckCircle2 : AlertTriangle;
+  const Icon = r.verdict === "authentique" ? CheckCircle2 : AlertTriangle;
+  const verdictLabel =
+    r.verdict === "authentique"
+      ? t("verdict_authentique")
+      : r.verdict === "suspect"
+        ? t("verdict_suspect")
+        : t("verdict_indetermine");
 
   return (
     <div className={`rounded-2xl border p-4 ${color}`}>
       <div className="flex items-center gap-2">
         <Icon className="h-5 w-5" />
         <div className="flex-1">
-          <p className="text-[10px] uppercase tracking-widest font-bold">
-            Verdict IA
-          </p>
-          <p className="font-bold capitalize">{r.verdict}</p>
+          <p className="text-[10px] uppercase tracking-widest font-bold">{t("verdict_ai")}</p>
+          <p className="font-bold capitalize">{verdictLabel}</p>
         </div>
-        <span className="text-xs font-mono">
-          {(r.confidence * 100).toFixed(0)}%
-        </span>
+        <span className="text-xs font-mono">{(r.confidence * 100).toFixed(0)}%</span>
       </div>
       {r.name && (
         <p className="mt-2 text-sm">
-          Médicament identifié : <span className="font-semibold">{r.name}</span>
+          {t("med_identified")} : <span className="font-semibold">{r.name}</span>
         </p>
       )}
       {r.redFlags.length > 0 && (
         <div className="mt-3">
           <p className="text-[11px] uppercase tracking-wider font-bold opacity-80">
-            Signaux détectés
+            {t("signals_detected")}
           </p>
           <ul className="mt-1 space-y-1 text-sm">
             {r.redFlags.map((f, i) => (
@@ -269,6 +265,8 @@ function RxPanel() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<PrescriptionCheck | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const lang = useLang();
+  const t = useT();
 
   const onFile = (f: File | null) => {
     if (!f) return;
@@ -284,10 +282,10 @@ function RxPanel() {
     setLoading(true);
     setError(null);
     try {
-      const r = await verifyPrescription({ data: { imageDataUrl: img } });
+      const r = await verifyPrescription({ data: { imageDataUrl: img, lang } });
       setResult(r);
     } catch (e: any) {
-      setError(e?.message ?? "Erreur d'analyse");
+      setError(e?.message ?? t("analysis_error"));
     } finally {
       setLoading(false);
     }
@@ -295,10 +293,7 @@ function RxPanel() {
 
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted-foreground">
-        L'IA vérifie l'authenticité et la cohérence de votre ordonnance avant
-        toute réservation.
-      </p>
+      <p className="text-sm text-muted-foreground">{t("rx_intro")}</p>
 
       <input
         ref={fileRef}
@@ -318,15 +313,13 @@ function RxPanel() {
             <Upload className="h-6 w-6" />
           </div>
           <div className="text-center">
-            <p className="font-semibold">Téléverser l'ordonnance</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Photo lisible du document original
-            </p>
+            <p className="font-semibold">{t("rx_upload_btn")}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("rx_upload_hint")}</p>
           </div>
         </button>
       ) : (
         <div className="rounded-2xl overflow-hidden border border-border bg-card">
-          <img src={img} alt="Ordonnance" className="w-full max-h-64 object-cover" />
+          <img src={img} alt="" className="w-full max-h-64 object-cover" />
           <div className="p-3 flex gap-2">
             <button
               onClick={() => {
@@ -335,7 +328,7 @@ function RxPanel() {
               }}
               className="flex-1 rounded-xl border border-border py-2 text-sm font-semibold"
             >
-              Changer
+              {t("change")}
             </button>
             <button
               onClick={analyze}
@@ -344,10 +337,10 @@ function RxPanel() {
             >
               {loading ? (
                 <span className="inline-flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" /> Vérification...
+                  <Loader2 className="h-4 w-4 animate-spin" /> {t("verifying")}
                 </span>
               ) : (
-                "Vérifier avec l'IA"
+                t("verify_ai")
               )}
             </button>
           </div>
@@ -366,6 +359,7 @@ function RxPanel() {
 }
 
 function RxResultCard({ r }: { r: PrescriptionCheck }) {
+  const t = useT();
   const good = r.status === "coherente" && r.authenticityScore >= 0.7;
   const bad = r.status === "suspecte" || r.authenticityScore < 0.4;
   const color = good
@@ -375,25 +369,30 @@ function RxResultCard({ r }: { r: PrescriptionCheck }) {
       : "bg-warning/20 border-warning/50 text-warning-foreground";
   const Icon = good ? CheckCircle2 : AlertTriangle;
 
+  const statusLabel =
+    r.status === "coherente"
+      ? t("status_coherente")
+      : r.status === "incoherente"
+        ? t("status_incoherente")
+        : r.status === "suspecte"
+          ? t("status_suspecte")
+          : t("status_illisible");
+
   return (
     <div className={`rounded-2xl border p-4 ${color}`}>
       <div className="flex items-center gap-2">
         <Icon className="h-5 w-5" />
         <div className="flex-1">
-          <p className="text-[10px] uppercase tracking-widest font-bold">
-            Statut ordonnance
-          </p>
-          <p className="font-bold capitalize">{r.status}</p>
+          <p className="text-[10px] uppercase tracking-widest font-bold">{t("rx_status")}</p>
+          <p className="font-bold capitalize">{statusLabel}</p>
         </div>
-        <span className="text-xs font-mono">
-          {(r.authenticityScore * 100).toFixed(0)}%
-        </span>
+        <span className="text-xs font-mono">{(r.authenticityScore * 100).toFixed(0)}%</span>
       </div>
 
       {r.medications.length > 0 && (
         <div className="mt-3">
           <p className="text-[11px] uppercase tracking-wider font-bold opacity-80">
-            Médicaments détectés
+            {t("meds_detected")}
           </p>
           <ul className="mt-1 space-y-1 text-sm">
             {r.medications.map((m, i) => (
@@ -410,7 +409,7 @@ function RxResultCard({ r }: { r: PrescriptionCheck }) {
       {r.issues.length > 0 && (
         <div className="mt-3">
           <p className="text-[11px] uppercase tracking-wider font-bold opacity-80">
-            Points à vérifier
+            {t("points_to_check")}
           </p>
           <ul className="mt-1 space-y-1 text-sm">
             {r.issues.map((f, i) => (
@@ -432,12 +431,10 @@ function RxResultCard({ r }: { r: PrescriptionCheck }) {
 type ChatMsg = { role: "user" | "assistant"; content: string };
 
 function ChatPanel() {
+  const t = useT();
+  const lang = useLang();
   const [msgs, setMsgs] = useState<ChatMsg[]>([
-    {
-      role: "assistant",
-      content:
-        "Bonjour 👋 Je suis Sentinelle, votre garde-fou santé. Décrivez vos symptômes ou posez une question — je vous oriente sans jamais prescrire.\n\n⚠️ Ceci n'est pas un avis médical. Consultez un professionnel de santé.",
-    },
+    { role: "assistant", content: t("sentinel_greeting") },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -450,17 +447,10 @@ function ChatPanel() {
     setInput("");
     setLoading(true);
     try {
-      const { reply } = await assistantChat({ data: { messages: next } });
+      const { reply } = await assistantChat({ data: { messages: next, lang } });
       setMsgs([...next, { role: "assistant", content: reply }]);
     } catch (e: any) {
-      setMsgs([
-        ...next,
-        {
-          role: "assistant",
-          content:
-            "Désolé, je n'ai pas pu répondre. Réessayez ou rendez-vous en pharmacie agréée.\n\n⚠️ Ceci n'est pas un avis médical.",
-        },
-      ]);
+      setMsgs([...next, { role: "assistant", content: t("sentinel_error") }]);
     } finally {
       setLoading(false);
     }
@@ -489,7 +479,7 @@ function ChatPanel() {
         ))}
         {loading && (
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Loader2 className="h-3 w-3 animate-spin" /> Sentinelle réfléchit...
+            <Loader2 className="h-3 w-3 animate-spin" /> {t("sentinel_thinking")}
           </div>
         )}
       </div>
@@ -504,21 +494,19 @@ function ChatPanel() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Décrire un symptôme, une question..."
+          placeholder={t("chat_placeholder")}
           className="flex-1 bg-transparent outline-none text-sm py-1.5"
         />
         <button
           type="submit"
           disabled={loading || !input.trim()}
           className="grid place-items-center h-9 w-9 rounded-xl bg-primary text-primary-foreground disabled:opacity-40"
-          aria-label="Envoyer"
+          aria-label={t("send")}
         >
           <Send className="h-4 w-4" />
         </button>
       </form>
-      <p className="text-[10px] text-muted-foreground text-center">
-        L'IA ne remplace pas un médecin. Urgence : 117 (police) · 118 (pompiers)
-      </p>
+      <p className="text-[10px] text-muted-foreground text-center">{t("emergency_footer")}</p>
     </div>
   );
 }
