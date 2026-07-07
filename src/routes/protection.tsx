@@ -5,24 +5,24 @@ import {
   ShieldCheck,
   ScanLine,
   FileCheck2,
-  MessageCircle,
   Upload,
   Loader2,
   AlertTriangle,
   CheckCircle2,
-  Send,
   Sparkles,
-  Bot,
+  Info,
+  Lightbulb,
+  Newspaper,
 } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import {
   scanMedication,
   verifyPrescription,
-  assistantChat,
   type ScanResult,
   type PrescriptionCheck,
 } from "@/lib/protection.functions";
 import { useLang, useT } from "@/lib/i18n";
+import { ALERTS, MINISTRY_TIPS } from "@/lib/alerts";
 
 export const Route = createFileRoute("/protection")({
   head: () => ({
@@ -31,14 +31,14 @@ export const Route = createFileRoute("/protection")({
       {
         name: "description",
         content:
-          "AI medication scanner, prescription verification and anti-self-medication assistant — health cybersecurity in Cameroon.",
+          "AI medication scanner, prescription verification and official health tips — health cybersecurity in Cameroon.",
       },
     ],
   }),
   component: ProtectionPage,
 });
 
-type Tab = "scan" | "rx" | "chat";
+type Tab = "scan" | "rx" | "tips";
 
 function ProtectionPage() {
   const [tab, setTab] = useState<Tab>("scan");
@@ -73,7 +73,7 @@ function ProtectionPage() {
           {[
             { id: "scan" as const, label: t("tab_scanner"), icon: ScanLine },
             { id: "rx" as const, label: t("tab_prescription"), icon: FileCheck2 },
-            { id: "chat" as const, label: t("tab_sentinel"), icon: MessageCircle },
+            { id: "tips" as const, label: t("tab_tips"), icon: Lightbulb },
           ].map((it) => {
             const active = tab === it.id;
             const Icon = it.icon;
@@ -95,7 +95,7 @@ function ProtectionPage() {
         <div className="mt-5">
           {tab === "scan" && <ScanPanel />}
           {tab === "rx" && <RxPanel />}
-          {tab === "chat" && <ChatPanel />}
+          {tab === "tips" && <TipsPanel />}
         </div>
 
         <p className="mt-6 mb-2 text-[11px] text-muted-foreground text-center">
@@ -427,86 +427,71 @@ function RxResultCard({ r }: { r: PrescriptionCheck }) {
   );
 }
 
-// -------- Sentinel chat --------
-type ChatMsg = { role: "user" | "assistant"; content: string };
-
-function ChatPanel() {
+// -------- Tips & Alerts (Ministry of Health) --------
+function TipsPanel() {
   const t = useT();
   const lang = useLang();
-  const [msgs, setMsgs] = useState<ChatMsg[]>([
-    { role: "assistant", content: t("sentinel_greeting") },
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const send = async () => {
-    const text = input.trim();
-    if (!text || loading) return;
-    const next: ChatMsg[] = [...msgs, { role: "user", content: text }];
-    setMsgs(next);
-    setInput("");
-    setLoading(true);
-    try {
-      const { reply } = await assistantChat({ data: { messages: next, lang } });
-      setMsgs([...next, { role: "assistant", content: reply }]);
-    } catch (e: any) {
-      setMsgs([...next, { role: "assistant", content: t("sentinel_error") }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <div className="space-y-3">
-      <div className="rounded-2xl border border-border bg-card p-3 space-y-3 max-h-[420px] overflow-y-auto">
-        {msgs.map((m, i) => (
-          <div key={i} className={`flex gap-2 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-            {m.role === "assistant" && (
-              <div className="grid place-items-center h-8 w-8 shrink-0 rounded-full bg-primary-soft text-primary">
-                <Bot className="h-4 w-4" />
-              </div>
-            )}
-            <div
-              className={`max-w-[80%] rounded-2xl px-3 py-2 text-sm whitespace-pre-wrap leading-snug ${
-                m.role === "user"
-                  ? "bg-primary text-primary-foreground rounded-br-md"
-                  : "bg-muted text-foreground rounded-bl-md"
-              }`}
-            >
-              {m.content}
-            </div>
-          </div>
-        ))}
-        {loading && (
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Loader2 className="h-3 w-3 animate-spin" /> {t("sentinel_thinking")}
-          </div>
-        )}
-      </div>
+    <div className="space-y-5">
+      <p className="text-sm text-muted-foreground">{t("tips_intro")}</p>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          send();
-        }}
-        className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3 py-2 focus-within:border-primary"
-      >
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder={t("chat_placeholder")}
-          className="flex-1 bg-transparent outline-none text-sm py-1.5"
-        />
-        <button
-          type="submit"
-          disabled={loading || !input.trim()}
-          className="grid place-items-center h-9 w-9 rounded-xl bg-primary text-primary-foreground disabled:opacity-40"
-          aria-label={t("send")}
-        >
-          <Send className="h-4 w-4" />
-        </button>
-      </form>
-      <p className="text-[10px] text-muted-foreground text-center">{t("emergency_footer")}</p>
+      <section>
+        <div className="flex items-center gap-2 mb-2">
+          <Newspaper className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-bold">{t("latest_alerts")}</h3>
+        </div>
+        <div className="space-y-2">
+          {ALERTS.map((a) => {
+            const tone =
+              a.severity === "danger"
+                ? "border-destructive/40 bg-destructive/10 text-destructive"
+                : a.severity === "warning"
+                  ? "border-warning/50 bg-warning/20 text-warning-foreground"
+                  : "border-primary/30 bg-primary-soft text-primary";
+            const Icon = a.severity === "info" ? Info : AlertTriangle;
+            return (
+              <div key={a.id} className={`rounded-2xl border p-3 ${tone}`}>
+                <div className="flex items-start gap-2.5">
+                  <Icon className="h-4 w-4 mt-0.5 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[9px] uppercase tracking-widest font-bold opacity-80">
+                      {a.tag[lang]}
+                    </p>
+                    <p className="font-semibold text-sm leading-tight mt-0.5">{a.title[lang]}</p>
+                    <p className="text-xs opacity-90 leading-snug mt-1">{a.body[lang]}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section>
+        <div className="flex items-center gap-2 mb-2">
+          <Lightbulb className="h-4 w-4 text-primary" />
+          <h3 className="text-sm font-bold">{t("ministry_tips")}</h3>
+        </div>
+        <div className="space-y-2">
+          {MINISTRY_TIPS.map((tip) => (
+            <div
+              key={tip.id}
+              className="rounded-2xl border border-border bg-card p-4 shadow-card"
+            >
+              <p className="text-[9px] uppercase tracking-widest font-bold text-primary">
+                {tip.category[lang]}
+              </p>
+              <p className="font-semibold text-sm leading-tight mt-1">{tip.title[lang]}</p>
+              <p className="text-xs text-muted-foreground leading-snug mt-1.5">
+                {tip.body[lang]}
+              </p>
+              <p className="mt-2 text-[10px] uppercase tracking-wider text-muted-foreground">
+                {t("source_label")} · <span className="font-semibold">{tip.source}</span>
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

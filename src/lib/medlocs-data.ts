@@ -29,7 +29,34 @@ export const PHARMACIES: Pharmacy[] = [
   { id: "djeleng", name: "Pharmacie Djeleng", distance: "À 3.1km", distanceM: 3100, open: true, city: "Bafoussam", address: "Djeleng V", price: 2480, phone: "+237 233 44 55 09", hours: "08:00 - 21:00", closesAt: "21:00", landmark: "À 80m du collège Djeleng", lat: 5.4925, lng: 10.4220 },
 ];
 
-export const CITIES = ["Bafoussam", "Bandjoun", "Mbouda", "Foumban"] as const;
+// Principales villes du Cameroun (10 régions)
+export const CITIES = [
+  "Yaoundé",
+  "Douala",
+  "Bafoussam",
+  "Bamenda",
+  "Garoua",
+  "Maroua",
+  "Ngaoundéré",
+  "Bertoua",
+  "Ebolowa",
+  "Buea",
+  "Limbé",
+  "Kribi",
+  "Edéa",
+  "Kumba",
+  "Nkongsamba",
+  "Dschang",
+  "Foumban",
+  "Mbouda",
+  "Bandjoun",
+  "Sangmélima",
+  "Kousséri",
+  "Meiganga",
+  "Tibati",
+  "Kumbo",
+  "Wum",
+] as const;
 
 export type MedCategory = "Antidouleur" | "Anti-inflammatoire" | "Antibiotique" | "Vitamines" | "Respiratoire" | "Cardio" | "Diabète";
 export const CATEGORIES: MedCategory[] = ["Antidouleur", "Anti-inflammatoire", "Antibiotique", "Vitamines", "Respiratoire", "Cardio", "Diabète"];

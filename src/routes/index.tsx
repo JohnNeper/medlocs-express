@@ -1,13 +1,13 @@
 import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X, ShieldCheck, ScanLine, MessageCircle, AlertTriangle, Info } from "lucide-react";
+import { Bell, MapPin, Search, FileText, ChevronRight, Sparkles, SlidersHorizontal, Navigation, Clock, X, ShieldCheck, ScanLine, Lightbulb, AlertTriangle, Info } from "lucide-react";
 import { ALERTS } from "@/lib/alerts";
 import logo from "@/assets/logo.png";
 import { POPULAR, PROMOS, PHARMACIES, CITIES, CATEGORIES } from "@/lib/medlocs-data";
 import { LeafletMap } from "@/components/medlocs/LeafletMap";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { GeolocationBanner } from "@/components/medlocs/GeolocationBanner";
-import { useT } from "@/lib/i18n";
+import { useLang, useT } from "@/lib/i18n";
 import { store, useStore } from "@/lib/store";
 import { pharmacyApi } from "@/lib/api";
 
@@ -26,6 +26,7 @@ type Filter = "open" | "duty" | "near" | null;
 function HomePage() {
   const navigate = useNavigate();
   const t = useT();
+  const lang = useLang();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>(null);
   const [city, setCity] = useState<string>("Bafoussam");
@@ -175,23 +176,23 @@ function HomePage() {
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-[10px] uppercase tracking-widest font-bold opacity-90">
-                Protection citoyenne · IA
+                {t("protection_card_kicker")}
               </p>
               <p className="text-sm font-semibold leading-tight">
-                Faux médicaments, ordonnances suspectes, automédication
+                {t("protection_card_title")}
               </p>
             </div>
             <ChevronRight className="h-4 w-4 opacity-80" />
           </div>
           <div className="mt-3 grid grid-cols-3 gap-2 text-[10px] font-semibold">
             <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
-              <ScanLine className="h-3.5 w-3.5" /> Scanner
+              <ScanLine className="h-3.5 w-3.5" /> {t("tab_scan_short")}
             </div>
             <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
-              <FileText className="h-3.5 w-3.5" /> Vérifier Rx
+              <FileText className="h-3.5 w-3.5" /> {t("tab_rx_short")}
             </div>
             <div className="rounded-xl bg-white/15 backdrop-blur py-2 flex flex-col items-center gap-1">
-              <MessageCircle className="h-3.5 w-3.5" /> Sentinelle
+              <Lightbulb className="h-3.5 w-3.5" /> {t("tab_tips")}
             </div>
           </div>
         </Link>
@@ -272,12 +273,11 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Alertes & Éducation numérique */}
         <section className="mt-7">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">Alertes & Conseils</h2>
+            <h2 className="text-base font-semibold">{t("alerts_and_tips")}</h2>
             <Link to="/protection" className="text-xs font-semibold text-primary inline-flex items-center gap-1">
-              Protection <ChevronRight className="h-3 w-3" />
+              {t("protection_link")} <ChevronRight className="h-3 w-3" />
             </Link>
           </div>
           <div className="mt-3 space-y-2">
@@ -296,11 +296,11 @@ function HomePage() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p className="text-[9px] uppercase tracking-widest font-bold opacity-80">
-                          {a.tag}
+                          {a.tag[lang]}
                         </p>
                       </div>
-                      <p className="font-semibold text-sm leading-tight mt-0.5">{a.title}</p>
-                      <p className="text-xs opacity-90 leading-snug mt-1">{a.body}</p>
+                      <p className="font-semibold text-sm leading-tight mt-0.5">{a.title[lang]}</p>
+                      <p className="text-xs opacity-90 leading-snug mt-1">{a.body[lang]}</p>
                     </div>
                   </div>
                 </div>

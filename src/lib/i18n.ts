@@ -156,6 +156,7 @@ const DICT = {
   tab_scanner: { fr: "Scanner", en: "Scanner" },
   tab_prescription: { fr: "Ordonnance", en: "Prescription" },
   tab_sentinel: { fr: "Sentinelle", en: "Sentinel" },
+  tab_tips: { fr: "Conseils", en: "Tips" },
   scan_intro: {
     fr: "Prenez en photo l'emballage, le blister ou la notice d'un médicament pour détecter d'éventuelles contrefaçons.",
     en: "Take a photo of the packaging, blister or leaflet to detect potential counterfeits.",
@@ -206,6 +207,83 @@ const DICT = {
   status_incoherente: { fr: "incohérente", en: "inconsistent" },
   status_suspecte: { fr: "suspecte", en: "suspicious" },
   status_illisible: { fr: "illisible", en: "unreadable" },
+
+  // Tips / Alerts feed
+  alerts_and_tips: { fr: "Alertes & Conseils", en: "Alerts & Tips" },
+  protection_link: { fr: "Protection", en: "Protection" },
+  latest_alerts: { fr: "Dernières alertes", en: "Latest alerts" },
+  ministry_tips: { fr: "Conseils du Ministère de la Santé", en: "Ministry of Health tips" },
+  tips_intro: {
+    fr: "Astuces officielles pour lutter contre l'automédication, les contrefaçons et les arnaques numériques.",
+    en: "Official tips to fight self-medication, counterfeits and digital scams.",
+  },
+  source_label: { fr: "Source", en: "Source" },
+
+  // Protection card on home
+  protection_card_title: {
+    fr: "Faux médicaments, ordonnances suspectes, automédication",
+    en: "Fake meds, suspicious prescriptions, self-medication",
+  },
+  protection_card_kicker: {
+    fr: "Protection citoyenne · IA",
+    en: "Citizen protection · AI",
+  },
+  tab_scan_short: { fr: "Scanner", en: "Scan" },
+  tab_rx_short: { fr: "Vérifier Rx", en: "Check Rx" },
+
+  // Help page
+  help_title: { fr: "Aide & Support", en: "Help & Support" },
+  help_sub: { fr: "Nous sommes là pour vous", en: "We are here for you" },
+  call_support: { fr: "Appeler le support", en: "Call support" },
+  support_hours: { fr: "Disponible 7j/7 · 8h-22h", en: "Available 7/7 · 8am-10pm" },
+  faq_1_q: { fr: "Pourquoi les prix ne sont-ils pas affichés publiquement ?", en: "Why are prices not shown publicly?" },
+  faq_1_a: { fr: "MedLocs respecte la déontologie pharmaceutique locale. Le tarif confidentiel est dévoilé après authentification.", en: "MedLocs follows local pharmaceutical ethics. The confidential price is revealed after authentication." },
+  faq_2_q: { fr: "Comment fonctionne le retrait ?", en: "How does pickup work?" },
+  faq_2_a: { fr: "Présentez votre QR Code à l'officine. Le pharmacien scanne et délivre votre ordonnance.", en: "Show your QR code at the pharmacy. The pharmacist scans and dispenses your order." },
+  faq_3_q: { fr: "Quels modes de paiement acceptez-vous ?", en: "Which payment methods do you accept?" },
+  faq_3_a: { fr: "MTN Mobile Money et Orange Money sont supportés pour les frais de service.", en: "MTN Mobile Money and Orange Money are supported for service fees." },
+  faq_4_q: { fr: "Mon ordonnance est-elle obligatoire ?", en: "Is a prescription mandatory?" },
+  faq_4_a: { fr: "Uniquement pour les médicaments soumis à prescription (antibiotiques, anxiolytiques, etc.).", en: "Only for prescription drugs (antibiotics, anxiolytics, etc.)." },
+
+  // Reservations page
+  my_reservations: { fr: "Mes réservations", en: "My bookings" },
+  realtime_tracking: { fr: "Suivi en temps réel de vos ordonnances", en: "Real-time tracking of your orders" },
+  no_reservation: { fr: "Aucune réservation", en: "No bookings yet" },
+  search_med_to_start: { fr: "Recherchez un médicament pour commencer.", en: "Search for a medication to get started." },
+  search: { fr: "Rechercher", en: "Search" },
+  active: { fr: "Actif", en: "Active" },
+
+  // Prescription upload
+  medical_rx: { fr: "Ordonnance médicale", en: "Medical prescription" },
+  upload_your_rx: { fr: "Téléversez votre prescription", en: "Upload your prescription" },
+  privacy_guaranteed: { fr: "Confidentialité garantie", en: "Privacy guaranteed" },
+  privacy_body: {
+    fr: "Votre ordonnance est chiffrée et transmise uniquement à l'officine choisie pour préparer votre commande.",
+    en: "Your prescription is encrypted and sent only to the chosen pharmacy to prepare your order.",
+  },
+  uploading: { fr: "Téléversement en cours...", en: "Uploading..." },
+  uploading_sub: { fr: "Votre ordonnance est en cours d'envoi sécurisé", en: "Your prescription is being securely sent" },
+  rx_received: { fr: "Ordonnance reçue", en: "Prescription received" },
+  ready_to_transmit: { fr: "Prête à être transmise", en: "Ready to transmit" },
+  upload_or_photo: { fr: "Téléverser ou photographier", en: "Upload or take a photo" },
+  file_hint: { fr: "JPG, PNG ou PDF — 10 Mo max", en: "JPG, PNG or PDF — 10 MB max" },
+  why: { fr: "Pourquoi ?", en: "Why?" },
+  why_1: { fr: "Certains médicaments (antibiotiques, anxiolytiques...) nécessitent une prescription valide.", en: "Some medications (antibiotics, anxiolytics...) require a valid prescription." },
+  why_2: { fr: "Le pharmacien vérifie l'ordonnance avant la délivrance.", en: "The pharmacist verifies the prescription before dispensing." },
+
+  // Pharmacy drawer
+  phone: { fr: "Téléphone", en: "Phone" },
+  call: { fr: "Appeler", en: "Call" },
+  hours_label: { fr: "Horaires", en: "Hours" },
+  closes_at: { fr: "Ferme à", en: "Closes at" },
+  landmark: { fr: "Repère", en: "Landmark" },
+  verified_partner: { fr: "Officine partenaire vérifiée par MedLocs", en: "Partner pharmacy verified by MedLocs" },
+
+  // Geolocation
+  enable_geoloc: { fr: "Activer la géolocalisation", en: "Enable geolocation" },
+  geoloc_sub: { fr: "Pour trouver les pharmacies les plus proches autour de vous.", en: "To find the nearest pharmacies around you." },
+  enable: { fr: "Activer", en: "Enable" },
+  location_on: { fr: "Position activée", en: "Location on" },
 } as const;
 
 

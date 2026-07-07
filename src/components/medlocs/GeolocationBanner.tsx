@@ -1,6 +1,7 @@
 import { MapPin, LocateFixed, Loader2 } from "lucide-react";
 import { useGeolocation } from "@/lib/useGeolocation";
 import { useEffect } from "react";
+import { useT } from "@/lib/i18n";
 
 export function GeolocationBanner({
   onCoords,
@@ -8,6 +9,7 @@ export function GeolocationBanner({
   onCoords?: (coords: { lat: number; lng: number }) => void;
 }) {
   const geo = useGeolocation(true);
+  const t = useT();
 
   useEffect(() => {
     if (geo.status === "granted" && geo.coords) onCoords?.(geo.coords);
@@ -20,7 +22,7 @@ export function GeolocationBanner({
         className="flex items-center gap-2 rounded-full bg-primary-soft text-primary px-3 py-1.5 text-xs font-semibold shadow-sm"
       >
         <LocateFixed className="h-3.5 w-3.5" />
-        Position activée
+        {t("location_on")}
       </button>
     );
   }
@@ -31,9 +33,9 @@ export function GeolocationBanner({
         <MapPin className="h-5 w-5" />
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold leading-tight">Activer la géolocalisation</p>
+        <p className="text-sm font-semibold leading-tight">{t("enable_geoloc")}</p>
         <p className="text-[11px] text-muted-foreground leading-tight mt-0.5">
-          Pour trouver les pharmacies les plus proches autour de vous.
+          {t("geoloc_sub")}
         </p>
       </div>
       <button
@@ -46,7 +48,7 @@ export function GeolocationBanner({
         ) : (
           <LocateFixed className="h-3.5 w-3.5" />
         )}
-        Activer
+        {t("enable")}
       </button>
     </div>
   );
