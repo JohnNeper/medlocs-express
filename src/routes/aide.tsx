@@ -1,25 +1,26 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronRight, Phone } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/aide")({
   head: () => ({ meta: [{ title: "Aide & Support — MedLocs" }] }),
   component: HelpPage,
 });
 
-const items = [
-  { q: "Pourquoi les prix ne sont-ils pas affichés publiquement ?", a: "MedLocs respecte la déontologie pharmaceutique locale. Le tarif confidentiel est dévoilé après authentification." },
-  { q: "Comment fonctionne le retrait ?", a: "Présentez votre QR Code à l'officine. Le pharmacien scanne et délivre votre ordonnance." },
-  { q: "Quels modes de paiement acceptez-vous ?", a: "MTN Mobile Money et Orange Money sont supportés pour les frais de service." },
-  { q: "Mon ordonnance est-elle obligatoire ?", a: "Uniquement pour les médicaments soumis à prescription (antibiotiques, anxiolytiques, etc.)." },
-];
-
 function HelpPage() {
+  const t = useT();
+  const items = [
+    { q: t("faq_1_q"), a: t("faq_1_a") },
+    { q: t("faq_2_q"), a: t("faq_2_a") },
+    { q: t("faq_3_q"), a: t("faq_3_a") },
+    { q: t("faq_4_q"), a: t("faq_4_a") },
+  ];
   return (
     <AppShell>
       <header className="px-5 pt-6 pb-4">
-        <h1 className="text-xl font-bold">Aide &amp; Support</h1>
-        <p className="text-xs text-muted-foreground mt-1">Nous sommes là pour vous</p>
+        <h1 className="text-xl font-bold">{t("help_title")}</h1>
+        <p className="text-xs text-muted-foreground mt-1">{t("help_sub")}</p>
       </header>
       <div className="px-5 space-y-3">
         <a
@@ -30,8 +31,8 @@ function HelpPage() {
             <Phone className="h-5 w-5" />
           </div>
           <div className="flex-1 text-left">
-            <p className="font-semibold">Appeler le support</p>
-            <p className="text-xs opacity-90">Disponible 7j/7 · 8h-22h</p>
+            <p className="font-semibold">{t("call_support")}</p>
+            <p className="text-xs opacity-90">{t("support_hours")}</p>
           </div>
           <ChevronRight className="h-5 w-5" />
         </a>

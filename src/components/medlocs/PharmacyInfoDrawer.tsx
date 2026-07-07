@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { X, Phone, Clock, MapPin, Navigation, ShieldCheck } from "lucide-react";
 import type { Pharmacy } from "@/lib/medlocs-data";
+import { useT } from "@/lib/i18n";
 
 export function PharmacyInfoDrawer({
   pharmacy,
@@ -11,6 +12,7 @@ export function PharmacyInfoDrawer({
   open: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
   useEffect(() => {
     if (open) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -44,7 +46,7 @@ export function PharmacyInfoDrawer({
               <button
                 onClick={onClose}
                 className="grid place-items-center h-9 w-9 rounded-full border border-border"
-                aria-label="Fermer"
+                aria-label="Close"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -59,10 +61,10 @@ export function PharmacyInfoDrawer({
                   <Phone className="h-4 w-4" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Téléphone</p>
+                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("phone")}</p>
                   <p className="text-sm font-semibold">{pharmacy.phone}</p>
                 </div>
-                <span className="text-xs font-semibold text-primary">Appeler</span>
+                <span className="text-xs font-semibold text-primary">{t("call")}</span>
               </a>
 
               <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4">
@@ -70,12 +72,12 @@ export function PharmacyInfoDrawer({
                   <Clock className="h-4 w-4" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Horaires</p>
+                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("hours_label")}</p>
                   <p className="text-sm font-semibold">{pharmacy.hours}</p>
                 </div>
                 {pharmacy.open && pharmacy.closesAt !== "—" && (
                   <span className="text-[11px] font-semibold text-primary bg-primary-soft rounded-full px-2 py-1">
-                    Ferme à {pharmacy.closesAt}
+                    {t("closes_at")} {pharmacy.closesAt}
                   </span>
                 )}
               </div>
@@ -85,7 +87,7 @@ export function PharmacyInfoDrawer({
                   <MapPin className="h-4 w-4" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">Repère</p>
+                  <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">{t("landmark")}</p>
                   <p className="text-sm font-semibold">{pharmacy.landmark}</p>
                 </div>
                 <Navigation className="h-4 w-4 text-muted-foreground" />
@@ -94,7 +96,7 @@ export function PharmacyInfoDrawer({
 
             <p className="mt-5 flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <ShieldCheck className="h-3.5 w-3.5 text-primary" />
-              Officine partenaire vérifiée par MedLocs
+              {t("verified_partner")}
             </p>
           </div>
         )}

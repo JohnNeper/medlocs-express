@@ -4,6 +4,7 @@ import { Ticket } from "lucide-react";
 import { AppShell } from "@/components/medlocs/AppShell";
 import { Timeline } from "@/components/medlocs/Timeline";
 import { store, useStore } from "@/lib/store";
+import { useT } from "@/lib/i18n";
 
 export const Route = createFileRoute("/reservations")({
   head: () => ({ meta: [{ title: "Mes réservations — MedLocs" }] }),
@@ -13,6 +14,7 @@ export const Route = createFileRoute("/reservations")({
 function ReservationsPage() {
   const reservations = useStore((s) => s.reservations);
   const user = useStore((s) => s.user);
+  const t = useT();
 
   useEffect(() => {
     store.syncReservations();
@@ -25,8 +27,8 @@ function ReservationsPage() {
   return (
     <AppShell>
       <header className="px-5 pt-6 pb-4">
-        <h1 className="text-xl font-bold">Mes réservations</h1>
-        <p className="text-xs text-muted-foreground mt-1">Suivi en temps réel de vos ordonnances</p>
+        <h1 className="text-xl font-bold">{t("my_reservations")}</h1>
+        <p className="text-xs text-muted-foreground mt-1">{t("realtime_tracking")}</p>
       </header>
       <div className="px-5">
         {reservations.length === 0 ? (
@@ -34,13 +36,13 @@ function ReservationsPage() {
             <div className="mx-auto grid place-items-center h-20 w-20 rounded-3xl bg-primary-soft text-primary">
               <Ticket className="h-8 w-8" />
             </div>
-            <h3 className="mt-5 font-semibold">Aucune réservation</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Recherchez un médicament pour commencer.</p>
+            <h3 className="mt-5 font-semibold">{t("no_reservation")}</h3>
+            <p className="mt-1 text-sm text-muted-foreground">{t("search_med_to_start")}</p>
             <Link
               to="/"
               className="mt-6 inline-block rounded-2xl bg-gradient-primary text-primary-foreground font-semibold px-5 py-3 shadow-pop"
             >
-              Rechercher
+              {t("search")}
             </Link>
           </div>
         ) : (
@@ -59,7 +61,7 @@ function ReservationsPage() {
                     <p className="text-xs text-muted-foreground">{r.pharmacyName}</p>
                   </div>
                   <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded-full bg-primary-soft text-primary">
-                    Actif
+                    {t("active")}
                   </span>
                 </div>
                 <div className="mt-4">

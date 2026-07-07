@@ -4,6 +4,7 @@ import { ChevronLeft, FileText, Upload, CheckCircle2, ShieldCheck, X, Loader2 } 
 import { AppShell } from "@/components/medlocs/AppShell";
 import { store, useStore } from "@/lib/store";
 import { reservationApi } from "@/lib/api";
+import { useT } from "@/lib/i18n";
 
 type Search = { q?: string; next?: string };
 
@@ -26,17 +27,18 @@ function OrdonnancePage() {
   const prescription = useStore((s) => s.prescription);
   const [isUploading, setIsUploading] = useState(false);
   const picked = prescription?.name;
+  const t = useT();
 
   const onPick = async (file: File | null) => {
     if (!file) return;
     setIsUploading(true);
-    
+
     try {
       const formData = new FormData();
       formData.append("prescription", file);
-      
+
       const data = await reservationApi.uploadPrescription(formData);
-      
+
       if (data && data.code === "done") {
         store.setPrescription({
           name: file.name,
@@ -46,7 +48,6 @@ function OrdonnancePage() {
       }
     } catch (error) {
       console.error("Prescription upload error:", error);
-      // Resilient fallback: save locally so flow isn't blocked
       store.setPrescription({ name: file.name, uploadedAt: Date.now() });
     } finally {
       setIsUploading(false);
@@ -65,8 +66,8 @@ function OrdonnancePage() {
           <ChevronLeft className="h-5 w-5" />
         </Link>
         <div className="flex-1">
-          <h1 className="text-base font-bold leading-tight">Ordonnance médicale</h1>
-          <p className="text-xs text-muted-foreground">Téléversez votre prescription</p>
+          <h1 className="text-base font-bold leading-tight">{t("medical_rx")}</h1>
+          <p className="text-xs text-muted-foreground">{t("upload_your_rx")}</p>
         </div>
       </header>
 
@@ -77,9 +78,9 @@ function OrdonnancePage() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="font-semibold text-sm">Confidentialité garantie</p>
+              <p className="font-semibold text-sm">{t("privacy_guaranteed")}</p>
               <p className="text-xs text-muted-foreground leading-relaxed mt-1">
-                Votre ordonnance est chiffrée et transmise uniquement à l'officine choisie pour préparer votre commande.
+                {t("privacy_body")}
               </p>
             </div>
           </div>
@@ -100,8 +101,8 @@ function OrdonnancePage() {
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
             <div className="text-center">
-              <p className="font-semibold">Téléversement en cours...</p>
-              <p className="text-xs text-muted-foreground mt-1">Votre ordonnance est en cours d'envoi sécurisé</p>
+              <p className="font-semibold">{t("uploading")}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("uploading_sub")}</p>
             </div>
           </div>
         ) : picked ? (
@@ -111,13 +112,13 @@ function OrdonnancePage() {
                 <CheckCircle2 className="h-5 w-5" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[11px] uppercase tracking-wider text-primary font-bold">Ordonnance reçue</p>
+                <p className="text-[11px] uppercase tracking-wider text-primary font-bold">{t("rx_received")}</p>
                 <p className="font-semibold text-sm truncate">{picked}</p>
-                <p className="text-xs text-muted-foreground">Prête à être transmise</p>
+                <p className="text-xs text-muted-foreground">{t("ready_to_transmit")}</p>
               </div>
               <button
                 onClick={() => { store.setPrescription(null); }}
-                aria-label="Retirer"
+                aria-label={t("change")}
                 className="grid place-items-center h-8 w-8 rounded-full border border-border bg-card"
               >
                 <X className="h-3.5 w-3.5" />
@@ -133,22 +134,22 @@ function OrdonnancePage() {
               <Upload className="h-6 w-6" />
             </div>
             <div className="text-center">
-              <p className="font-semibold">Téléverser ou photographier</p>
-              <p className="text-xs text-muted-foreground mt-1">JPG, PNG ou PDF — 10 Mo max</p>
+              <p className="font-semibold">{t("upload_or_photo")}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("file_hint")}</p>
             </div>
           </button>
         )}
 
         <div className="rounded-2xl border border-border bg-card p-4">
-          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold">Pourquoi ?</p>
+          <p className="text-[11px] uppercase tracking-wider text-muted-foreground font-bold">{t("why")}</p>
           <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
             <li className="flex items-start gap-2">
               <FileText className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-              Certains médicaments (antibiotiques, anxiolytiques...) nécessitent une prescription valide.
+              {t("why_1")}
             </li>
             <li className="flex items-start gap-2">
               <ShieldCheck className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-              Le pharmacien vérifie l'ordonnance avant la délivrance.
+              {t("why_2")}
             </li>
           </ul>
         </div>
@@ -158,7 +159,7 @@ function OrdonnancePage() {
           disabled={!picked || isUploading}
           className="w-full rounded-2xl bg-gradient-primary text-primary-foreground font-semibold py-4 shadow-pop disabled:opacity-40 disabled:shadow-none transition active:scale-[0.99]"
         >
-          Continuer
+          {t("continue")}
         </button>
       </div>
     </AppShell>
